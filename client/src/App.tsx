@@ -1,10 +1,9 @@
-
+import HarryWeb from "./components/harryWeb"
 
 function App() {
   return (
     <>
-      <section>
-      </section>
+      <HarryWeb />
     </>
   )
 }
