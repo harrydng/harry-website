@@ -1,11 +1,7 @@
-import HarryWeb from "./components/harryWeb"
+import HarryWeb from "./components/harryWeb";
 
 function App() {
-  return (
-    <>
-      <HarryWeb />
-    </>
-  )
+  return <HarryWeb />;
 }
 
-export default App
+export default App;

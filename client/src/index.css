@@ -1,1 +1,64 @@
 @import "tailwindcss";
+
+@keyframes driftAlongMilkyWay {
+  0% {
+    transform: translate3d(0px, 0px, 0);
+  }
+
+  50% {
+    transform: translate3d(var(--drift-x), var(--drift-y), 0);
+  }
+
+  100% {
+    transform: translate3d(0px, 0px, 0);
+  }
+}
+
+@keyframes starSparkle {
+  0%,
+  100% {
+    opacity: var(--base-opacity);
+    transform: scale(1);
+  }
+
+  45% {
+    opacity: var(--base-opacity);
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.9);
+  }
+
+  55% {
+    opacity: var(--base-opacity);
+    transform: scale(1);
+  }
+}
+
+.font-pixel {
+  font-family: "Press Start 2P", monospace;
+}
+
+@keyframes run-across {
+  0% {
+    transform: translateX(-110vw);
+  }
+
+  18% {
+    transform: translateX(8vw);
+  }
+
+  75% {
+    transform: translateX(8vw);
+  }
+
+  100% {
+    transform: translateX(110vw);
+  }
+}
+
+.animate-run-across {
+  animation: run-across 4.5s ease-in-out forwards;
+}

@@ -1,5 +1,9 @@
-import ChessBoard from "./main/chessGame/chessBoard";
+import HarryMindLanding from "./main/landing/harryMindLanding";
 
 export default function harryWeb() {
-    return <ChessBoard />
+  return (
+    <main className="min-h-screen bg-black">
+      <HarryMindLanding />
+    </main>
+  );
 }

@@ -1,17 +1,48 @@
 export const bake = [
     {
-        id: "bake",
-        name: "Bake",
-        bake: [
-            
-        ],
+        id: "burntbasquecheesecake",
+        name: "Burnt Basque Cheesecake",
         image: [
 
         ],
-        description: [
+        description: "",
+        recipe: []
+    },
+    {
+        id: "chocolatechipscookies",
+        name: "Chocolate Chips Cookies",
+        image: [
 
         ],
+        description: "",
+        recipe: []
+    },
+    {
+        id: "cake",
+        name: "Cakes",
+        image: [
 
+        ],
+        description: "",
+        recipe: []
+    },
+    {
+        id: "macaroons",
+        name: "Macaroons",
+        image: [
+
+        ],
+        description: "",
+        recipe: []
+    },
+    {
+        id: "brownies",
+        name: "Brownies",
+        image: [
+
+        ],
+        description: "",
+        recipe: []
     },
 ]
 
@@ -34,18 +65,40 @@ export const coooking = [
 
 export const travel = [
     {
-        id: "travel",
-        name: "Travel",
-        location: [
-            
-        ],
+        id: "lima",
+        city: "Lima",
+        country: "Peru",
         image: [
 
         ],
-        description: [
+        description: "",
+    },
+    {
+        id: "cuzco",
+        city: "Cuzco",
+        country: "Peru",
+        image: [
 
         ],
+        description: "",
+    },
+    {
+        id: "cancun",
+        city: "cancun",
+        country: "Mexico",
+        image: [
 
+        ],
+        description: "",
+    },
+    {
+        id: "peru",
+        city: "Lima",
+        country: "Peru",
+        image: [
+
+        ],
+        description: "",
     },
 ]
 
