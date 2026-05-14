@@ -10,18 +10,18 @@ export const navItems = [
     path: "/projects",
   },
   {
-    id: "professional",
-    label: "Professional",
-    path: "/professional",
+    id: "professionals",
+    label: "Professionals",
+    path: "/professionals",
   },
   {
     id: "about",
-    label: "About",
-    path: "/about",
+    label: "About Me",
+    path: "/aboutme",
   },
   {
-    id: "contact",
-    label: "Contact",
-    path: "/contact",
+    id: "interests",
+    label: "Interests",
+    path: "/interests",
   },
 ] as const;
