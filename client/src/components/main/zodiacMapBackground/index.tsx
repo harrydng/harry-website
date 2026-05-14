@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 import "../../../index.css";
 import { zodiacConstellations } from "../../../data/zodiacConstellations";
 
+
 type Star = {
   x: number;
   y: number;
@@ -170,11 +171,11 @@ function getStarColor(index: number) {
 }
 
 function shouldSparkle(index: number) {
-  return index % 13 === 0 || index % 29 === 0;
+  return index % 13 === 0 || index % 29 === 0 || index % 2 === 0;
 }
 
 function getSparkleDuration(index: number) {
-  return `${15 + (index % 8)}s`;
+  return `${20 + (index % 8)}s`;
 }
 
 function getSparkleDelay(index: number) {
@@ -185,8 +186,8 @@ export default function ZodiacMapBackground() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   const constellations = useMemo(() => getConstellationsForSvg(), []);
-  const backgroundStars = useMemo(() => createStars(1300), []);
-  const milkyWayStars = useMemo(() => createMilkyWayStars(600), []);
+  const backgroundStars = useMemo(() => createStars(1350), []);
+  const milkyWayStars = useMemo(() => createMilkyWayStars(500), []);
 
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-[#061116]">
