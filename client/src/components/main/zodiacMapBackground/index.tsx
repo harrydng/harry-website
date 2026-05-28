@@ -112,7 +112,6 @@ function seededRandom(seed: number) {
 }
 
 function milkyWayCenterY(x: number) {
-  // Curved band running across the screen similar to the reference
   return (
     720 -
     120 * Math.sin((x / 1920) * Math.PI * 1.1) +
@@ -187,8 +186,8 @@ export default function ZodiacMapBackground() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   const constellations = useMemo(() => getConstellationsForSvg(), []);
-  const backgroundStars = useMemo(() => createStars(1350), []);
-  const milkyWayStars = useMemo(() => createMilkyWayStars(500), []);
+  const backgroundStars = useMemo(() => createStars(1300), []);
+  const milkyWayStars = useMemo(() => createMilkyWayStars(550), []);
 
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-[#061116]">

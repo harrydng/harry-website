@@ -39,7 +39,7 @@ export const professional = [
     to_month: 6,
     to_year: 2025,
     link: "https://snyk.io/",
-    logo: "professional/snyk-logo.avif",
+    logo: "professional/snyk-logo.png",
     description: [
       "Built Excel models for the Pricing Calculator for a new credit-based pricing model, forecast usage using customers' lifecycle data; communicated with SEs and AEs to improve accuracy and apply discounts",
       "Developed full-stack the Pricing Calculator (React + Flask + Snowflake) replacing spreadsheets; cut deal time, prevented manual pricing errors, and enabled AE/SE self-serve for 50+ opportunities per quarter",

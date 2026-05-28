@@ -1,59 +1,38 @@
-export const techStack = [
-  //back-end
-  {
-    id: "java",
-    name: "Java",
-  },
-  {
-    id: "javascript",
-    name: "JavaScript",
-  },
-  {
-    id: "python",
-    name: "Pyhon",
-  },
-  {
-    id: "sql",
-    name: "SQL",
-  },
-  {
-    id: "java",
-    name: "Java",
-  },
-  {
-    id: "kotlin",
-    name: "Kotlin",
-  },
-  {
-    id: "c",
-    name: "C",
-  },
-  {
-    id: "assembly",
-    name: "Assembly",
-  },
-  {
-    id: "flask",
-    name: "Flask",
-  },
-  {
-    id: "springboot",
-    name: "Spring Boot MVC",
-  },
+import type { ElementType } from "react";
 
-  //front-end
-  {
-    id: "typescript",
-    name: "Typescript",
-  },
-  {
-    id: "react",
-    name: "React",
-  },
+import {
+  FaJava,
+  FaJs,
+  FaPython,
+  FaReact,
+} from "react-icons/fa";
 
-  //database
-  {
-    id: "sql",
-    name: "SQL",
-  },
+import {
+  SiTypescript,
+  SiKotlin,
+  SiFlask,
+  SiSpringboot,
+  SiSqlite,
+  SiGnubash,
+  SiC,
+} from "react-icons/si";
+
+export type TechStackItem = {
+  id: string;
+  name: string;
+  Icon: ElementType;
+};
+
+export const techStack: TechStackItem[] = [
+  { id: "java", name: "Java", Icon: FaJava },
+  { id: "javascript", name: "JavaScript", Icon: FaJs },
+  { id: "python", name: "Python", Icon: FaPython },
+  { id: "sql", name: "SQL", Icon: SiSqlite },
+  { id: "kotlin", name: "Kotlin", Icon: SiKotlin },
+  { id: "c", name: "C", Icon: SiC },
+  { id: "assembly", name: "Assembly", Icon: SiGnubash },
+  { id: "flask", name: "Flask", Icon: SiFlask },
+  { id: "springboot", name: "Spring Boot MVC", Icon: SiSpringboot },
+  { id: "typescript", name: "TypeScript", Icon: SiTypescript },
+  { id: "react", name: "React", Icon: FaReact },
 ];

@@ -2,7 +2,12 @@ export const navItems = [
   {
     id: "home",
     label: "Home",
-    path: "/home",
+    path: "/",
+  },
+  {
+    id: "about",
+    label: "About-Me",
+    path: "/aboutme",
   },
   {
     id: "projects",
@@ -13,11 +18,6 @@ export const navItems = [
     id: "professionals",
     label: "Professionals",
     path: "/professionals",
-  },
-  {
-    id: "about",
-    label: "About Me",
-    path: "/aboutme",
   },
   {
     id: "interests",
