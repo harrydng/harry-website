@@ -179,17 +179,26 @@ export default function HarryWeb() {
                   key={item.id}
                   onClick={() => navigate(item.path)}
                   className={`font-pixel text-[10px] uppercase tracking-[0.16em] transition-all duration-300
-                  hover:scale-105 hover:text-white hover:drop-shadow-[0_0_10px_rgba(255,255,255,1)]
-                  ${
-                    isActive
-                      ? "text-white/85"
-                      : "text-red-400 drop-shadow-[0_0_10px_rgba(248,113,113,0.8)]"
-                  }`}
+        hover:scale-105 hover:text-white hover:drop-shadow-[0_0_10px_rgba(255,255,255,1)]
+        ${
+          isActive
+            ? "text-white/85"
+            : "text-red-400 drop-shadow-[0_0_10px_rgba(248,113,113,0.8)]"
+        }`}
                 >
                   {item.label}
                 </button>
               );
             })}
+
+            <a
+              href="/harry_resume.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="font-pixel text-[10px] uppercase tracking-[0.16em] text-red-400 drop-shadow-[0_0_10px_rgba(248,113,113,0.8)] transition-all duration-300 hover:scale-105 hover:text-white hover:drop-shadow-[0_0_10px_rgba(255,255,255,1)]"
+            >
+              Resume
+            </a>
           </div>
 
           {/* Right socials */}
@@ -303,18 +312,6 @@ export default function HarryWeb() {
           </div>
         </div>
       </nav>
-
-      {/* Center desktop Resume link */}
-      {showNav && (
-        <a
-          href="/harry_resume.pdf"
-          target="_blank"
-          rel="noreferrer"
-          className="fixed left-1/2 top-[110px] z-40 hidden -translate-x-1/2 font-pixel text-[20px] uppercase tracking-[0.25em] text-white/70 transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:text-red-300 hover:drop-shadow-[0_0_12px_rgba(248,113,113,0.85)] md:block"
-        >
-          Resume
-        </a>
-      )}
 
       {/* Page content, pushed down so nav does not block it */}
       <section className="pointer-events-none relative z-10 min-h-screen px-6 pt-20 md:px-10 md:pt-24">

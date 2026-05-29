@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { professional } from "../../../data/professional";
-import { HiOutlineDocumentDuplicate } from "react-icons/hi2";
 
 type ProfessionalExperience = (typeof professional)[number];
 
@@ -10,8 +9,9 @@ const VIEWBOX_HEIGHT = 1080;
 const TIMELINE_START_YEAR = 2023;
 const TIMELINE_END_YEAR = 2026;
 
-const TIMELINE_START_X = 140;
-const TIMELINE_END_X = 1780;
+const TIMELINE_START_X = 80;
+const TIMELINE_END_X = 1850;
+const TIMELINE_Y_OFFSET = 60;
 
 function milkyWayCenterY(x: number) {
   return (
@@ -47,14 +47,14 @@ function getTimelineX(timelineYear: number) {
 }
 
 function getTimelineY(timelineYear: number) {
-  return milkyWayCenterY(getTimelineX(timelineYear));
+  return milkyWayCenterY(getTimelineX(timelineYear)) + TIMELINE_Y_OFFSET;
 }
 
 function getMilkyWayTimelinePoints() {
   const points: string[] = [];
 
   for (let x = TIMELINE_START_X; x <= TIMELINE_END_X; x += 24) {
-    points.push(`${x},${milkyWayCenterY(x)}`);
+    points.push(`${x},${milkyWayCenterY(x) + TIMELINE_Y_OFFSET}`);
   }
 
   return points.join(" ");
@@ -109,22 +109,6 @@ export default function Professionals() {
           My Career Timeline
         </h1>
       </div>
-      {/* Resume icon */}
-      <a
-        href="/harry_resume.pdf"
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Open Harry's resume"
-        className="fixed left-[120px] top-[120px] z-30 hidden flex-col items-center gap-2 text-white/100 transition-all duration-300 hover:-translate-y-1 hover:scale-105 hover:text-red-300 hover:drop-shadow-[0_0_14px_rgba(248,113,113,0.75)] md:flex"
-      >
-        <span className="text-[150px] leading-none">
-          <HiOutlineDocumentDuplicate />
-        </span>
-
-        <span className="font-pixel text-[8px] uppercase tracking-[0.2em]">
-          Resume
-        </span>
-      </a>
 
       {/* Desktop timeline */}
       <div className="pointer-events-none fixed inset-0 z-20 hidden md:block">
@@ -179,7 +163,7 @@ export default function Professionals() {
                 className="font-pixel"
                 fontSize="24"
                 letterSpacing="8"
-                fill="rgba(255,255,255,0.45)"
+                fill="rgba(255, 255, 255, 0.72)"
               >
                 {year}
               </text>
