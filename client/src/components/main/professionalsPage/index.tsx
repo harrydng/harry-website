@@ -95,6 +95,22 @@ export default function Professionals() {
   const [selectedExperience, setSelectedExperience] =
     useState<ProfessionalExperience | null>(null);
 
+  const [isModalClosing, setIsModalClosing] = useState(false);
+
+  const openModal = (experience: ProfessionalExperience) => {
+    setIsModalClosing(false);
+    setSelectedExperience(experience);
+  };
+
+  const closeModal = () => {
+    setIsModalClosing(true);
+
+    window.setTimeout(() => {
+      setSelectedExperience(null);
+      setIsModalClosing(false);
+    }, 350);
+  };
+
   const sortedProfessional = [...professional].sort((a, b) => {
     return getMiddleTimelineYear(a) - getMiddleTimelineYear(b);
   });
@@ -201,7 +217,7 @@ export default function Professionals() {
                 >
                   <button
                     type="button"
-                    onClick={() => setSelectedExperience(experience)}
+                    onClick={() => openModal(experience)}
                     className="group h-full w-full rounded-2xl border border-red-400/25 bg-black/[0.38] px-4 py-4 text-center backdrop-blur-[3px]
                     shadow-[0_0_35px_rgba(0,0,0,0.55)] transition-all duration-300
                     hover:-translate-y-1 hover:border-red-400/60 hover:bg-red-500/10 hover:shadow-[0_0_35px_rgba(248,113,113,0.32)]"
@@ -231,7 +247,7 @@ export default function Professionals() {
           <button
             key={`${experience.id}-${experience.role}`}
             type="button"
-            onClick={() => setSelectedExperience(experience)}
+            onClick={() => openModal(experience)}
             className="group relative text-left"
           >
             <div className="absolute -left-[33px] top-1 flex h-4 w-4 items-center justify-center rounded-full border border-red-300/70 bg-red-500/20 shadow-[0_0_18px_rgba(248,113,113,0.45)]">
@@ -258,16 +274,26 @@ export default function Professionals() {
       {/* Popup modal */}
       {selectedExperience && (
         <div
-          className="fixed font-['Times_New_Roman'] inset-0 z-50 flex items-center justify-center bg-black/60 px-6 backdrop-blur-sm"
-          onClick={() => setSelectedExperience(null)}
+          className={`fixed inset-0 z-50 flex items-center justify-center bg-black/60 px-6 font-['Times_New_Roman'] backdrop-blur-sm transition-all duration-350 ease-out
+    ${
+      isModalClosing
+        ? "opacity-0 backdrop-blur-0"
+        : "opacity-100 backdrop-blur-sm"
+    }`}
+          onClick={closeModal}
         >
           <div
-            className="relative max-h-[85vh] w-full max-w-[900px] overflow-y-auto rounded-3xl border border-red-400/30 bg-black/85 px-6 py-6 shadow-[0_0_60px_rgba(248,113,113,0.22)] backdrop-blur-md"
+            className={`relative max-h-[85vh] w-full max-w-[900px] overflow-y-auto rounded-3xl border border-red-400/30 bg-black/85 px-6 py-6 shadow-[0_0_60px_rgba(248,113,113,0.22)] backdrop-blur-md transition-all duration-350 ease-out
+  ${
+    isModalClosing
+      ? "scale-75 rotate-[-8deg] opacity-0"
+      : "scale-100 rotate-0 opacity-100 animate-[modalRotateIn_350ms_ease-out]"
+  }`}
             onClick={(event) => event.stopPropagation()}
           >
             <button
               type="button"
-              onClick={() => setSelectedExperience(null)}
+              onClick={closeModal}
               className="absolute right-5 top-4 text-xl text-white/50 transition hover:text-red-300"
               aria-label="Close popup"
             >

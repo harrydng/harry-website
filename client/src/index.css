@@ -151,3 +151,20 @@
 .animate-bounce-float-four {
   animation: bounce-float-four 13s ease-in-out infinite;
 }
+
+@keyframes modalRotateIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.75) rotate(-8deg);
+  }
+
+  65% {
+    opacity: 1;
+    transform: scale(1.03) rotate(2deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
