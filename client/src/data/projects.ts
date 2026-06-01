@@ -1,3 +1,134 @@
 export const projects = [
-    
-]
+  {
+    id: "earthbeats",
+    project_name: "EarthBeats",
+    award: "Winner of Hackbeanpot 2025",
+    link: "https://devpost.com/software/earthbeats",
+    image: "/projects/earth-beats.png",
+    tech_stack: [
+      "Next.js",
+      "Node.js",
+      "Python",
+      "Flask",
+      "Hume AI",
+      "MongoDB",
+      "Google Maps API",
+      "Spotify API",
+    ],
+    project_description:
+      "EarthBeats is an AI-powered road trip planner that helps users travel more sustainably by combining eco-conscious routing, music personalization, and gamified rewards.",
+    contribution: [
+      "Helped build the route planning experience using Google Maps API so users could compare travel paths with carbon impact in mind.",
+      "Worked on the reward system where users earn in-app currency for making greener travel choices and can redeem it with sustainable partner businesses.",
+      "Integrated mood-based music matching with Spotify API and Hume AI to make the trip feel more personalized and interactive.",
+    ],
+    hard_skills: [
+      "Next.js",
+      "Node.js",
+      "Python",
+      "Flask",
+      "MongoDB",
+      "REST APIs",
+      "Google Maps API",
+      "Spotify API",
+      "Hume AI",
+    ],
+  },
+
+  {
+    id: "code2date",
+    project_name: "Code2Date",
+    award: "",
+    link: "https://github.com/harrydng/Code2Date",
+    image: "/projects/code2date.png",
+    tech_stack: [
+      "React",
+      "TypeScript",
+      "Node.js",
+      "MongoDB",
+      "REST APIs",
+      "WebSocket",
+    ],
+    project_description:
+      "Code2Date is a developer-focused Q&A platform with a social matching layer, designed to help users ask technical questions, connect with peers, and form interest-based groups.",
+    contribution: [
+      "Built core full-stack features for posting questions, answering, voting, and browsing community activity.",
+      "Worked on the matching concept that connects users based on shared interests, profile activity, and technical topics.",
+      "Implemented real-time messaging behavior with WebSockets for direct and group communication.",
+    ],
+    hard_skills: [
+      "React",
+      "TypeScript",
+      "Node.js",
+      "MongoDB",
+      "REST APIs",
+      "WebSocket",
+    ],
+  },
+
+  {
+    id: "nomsy",
+    project_name: "Nomsy",
+    award: "",
+    link: "https://github.com/harrydng/Nomsy",
+    image: "/projects/nomsy.png",
+    tech_stack: [
+      "Kotlin",
+      "MVVM",
+      "Jetpack Compose",
+      "Room",
+      "PythonAnywhere",
+      "MealDB API",
+      "Spoonacular API",
+      "JUnit4",
+    ],
+    project_description:
+      "Nomsy is an Android nutrition and recipe app that helps users log meals, track goals, discover recipes, and get food insights from APIs and image-based analysis.",
+    contribution: [
+      "Led a team of 4 while structuring the app around MVVM, unidirectional data flow, and Room persistence for offline-first meal tracking.",
+      "Integrated MealDB and Spoonacular APIs to support recipe discovery, food image classification, and nutrition-related insights.",
+      "Wrote tests across ViewModels, repositories, and Jetpack Compose UI to improve stability and catch user-flow issues.",
+    ],
+    hard_skills: [
+      "Kotlin",
+      "Jetpack Compose",
+      "MVVM",
+      "Room",
+      "MealDB API",
+      "Spoonacular API",
+      "JUnit4",
+      "PythonAnywhere",
+    ],
+  },
+
+  {
+    id: "spendr",
+    project_name: "Spendr",
+    award: "Best AI Hack at FinHacks 2025",
+    link: "https://devpost.com/software/spendr",
+    image: "/projects/spendr.png",
+    tech_stack: [
+      "React",
+      "Flask",
+      "MySQL",
+      "Docker",
+      "LightFM",
+      "REST APIs",
+    ],
+    project_description:
+      "Spendr is a financial compatibility app that uses spending behavior and personality-style inputs to match users based on money habits and lifestyle alignment.",
+    contribution: [
+      "Built the matchmaking flow using a financial personality quiz and LightFM-based recommendation logic.",
+      "Created Flask REST APIs for user authentication, quiz processing, match retrieval, and financial profile management.",
+      "Designed the MySQL schema and containerized the app with Docker to make local development and deployment smoother.",
+    ],
+    hard_skills: [
+      "React",
+      "Flask",
+      "MySQL",
+      "Docker",
+      "LightFM",
+      "REST APIs",
+    ],
+  },
+] as const;

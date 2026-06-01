@@ -9,8 +9,8 @@ const VIEWBOX_HEIGHT = 1080;
 const TIMELINE_START_YEAR = 2023;
 const TIMELINE_END_YEAR = 2026;
 
-const TIMELINE_START_X = 80;
-const TIMELINE_END_X = 1850;
+const TIMELINE_START_X = 100;
+const TIMELINE_END_X = 1840;
 const TIMELINE_Y_OFFSET = 60;
 
 function milkyWayCenterY(x: number) {
