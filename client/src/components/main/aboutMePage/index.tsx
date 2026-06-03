@@ -9,7 +9,7 @@ export default function AboutMe() {
       </div>
 
       {/* Content */}
-      <div className="mx-auto mt-10 flex w-full max-w-5xl flex-col items-center justify-center text-center">
+      <div className="mx-auto mt-4 flex w-full max-w-5xl flex-col items-center justify-center text-center">
         <div className="flex flex-wrap justify-center gap-3">
           <div className="font-pixel rounded-xl border border-red-400/30 bg-red-500/10 px-4 py-3 backdrop-blur-sm shadow-[0_0_18px_rgba(248,113,113,0.18)]">
             <p className="text-[8px] uppercase tracking-[0.22em] text-red-300">
@@ -37,7 +37,7 @@ export default function AboutMe() {
           </div>
         </div>
 
-        <div className="font-pixel mt-10 max-w-[850px] space-y-5 rounded-2xl border border-white/[0.06] bg-black/[0.28] px-8 py-6 text-left text-[10px] leading-7 text-white/80 backdrop-blur-[3px] shadow-[0_0_45px_rgba(0,0,0,0.35)]">
+        <div className="font-pixel mt-4 max-w-[850px] space-y-5 rounded-2xl border border-white/[0.06] bg-black/[0.28] px-8 py-6 text-left text-[10px] leading-7 text-white/80 backdrop-blur-[3px] shadow-[0_0_45px_rgba(0,0,0,0.35)]">
           <p>
             Welcome to my little corner of the internet, also known as the place
             where I somehow turned my resume, personality, side quests, and
