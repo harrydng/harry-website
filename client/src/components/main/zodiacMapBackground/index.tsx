@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "../../../index.css";
 import { zodiacConstellations } from "../../../data/zodiacConstellations";
 
@@ -45,6 +45,25 @@ const zodiacOrder = [
 const VIEWBOX_WIDTH = 1920;
 const VIEWBOX_HEIGHT = 1080;
 
+function useIsSmallScreen() {
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
+
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsSmallScreen(window.innerWidth < 768);
+    };
+
+    checkScreen();
+    window.addEventListener("resize", checkScreen);
+
+    return () => {
+      window.removeEventListener("resize", checkScreen);
+    };
+  }, []);
+
+  return isSmallScreen;
+}
+
 function getColumnBoundary(index: number): SvgPoint[] {
   const columnWidth = VIEWBOX_WIDTH / 12;
   const x1 = index * columnWidth;
@@ -58,12 +77,72 @@ function getColumnBoundary(index: number): SvgPoint[] {
   ];
 }
 
-function getConstellationsForSvg(): SvgConstellation[] {
+function getMobileBoundary(index: number): SvgPoint[] {
+  const columns = 3;
+  const rows = 4;
+
+  const gridWidth = 860;
+  const gridHeight = 720;
+
+  const startX = (VIEWBOX_WIDTH - gridWidth) / 2;
+  const startY = 180;
+
+  const cellWidth = gridWidth / columns;
+  const cellHeight = gridHeight / rows;
+
+  const col = index % columns;
+  const row = Math.floor(index / columns);
+
+  const x1 = startX + col * cellWidth;
+  const x2 = x1 + cellWidth;
+  const y1 = startY + row * cellHeight;
+  const y2 = y1 + cellHeight;
+
+  return [
+    { x: x1, y: y1 },
+    { x: x2, y: y1 },
+    { x: x2, y: y2 },
+    { x: x1, y: y2 },
+  ];
+}
+
+function getConstellationsForSvg(isSmallScreen: boolean): SvgConstellation[] {
   const columnWidth = VIEWBOX_WIDTH / 12;
 
   return zodiacConstellations.map((item, index) => {
-    const columnStart = index * columnWidth;
-    const columnCenter = columnStart + columnWidth / 2;
+    let columnCenter: number;
+    let constellationCenterY: number;
+    let targetWidth: number;
+    let targetHeight: number;
+    let boundary: SvgPoint[];
+
+    if (isSmallScreen) {
+      const columns = 3;
+      const gridWidth = 860;
+      const startX = (VIEWBOX_WIDTH - gridWidth) / 2;
+      const startY = 180;
+      const cellWidth = gridWidth / 3;
+      const cellHeight = 720 / 4;
+
+      const col = index % columns;
+      const row = Math.floor(index / columns);
+
+      columnCenter = startX + col * cellWidth + cellWidth / 2;
+      constellationCenterY = startY + row * cellHeight + cellHeight / 2;
+
+      targetWidth = cellWidth * 0.48;
+      targetHeight = cellHeight * 0.42;
+      boundary = getMobileBoundary(index);
+    } else {
+      const columnStart = index * columnWidth;
+
+      columnCenter = columnStart + columnWidth / 2;
+      constellationCenterY = milkyWayCenterY(columnCenter);
+
+      targetWidth = columnWidth * 0.58;
+      targetHeight = 150;
+      boundary = getColumnBoundary(index);
+    }
 
     const minX = Math.min(...item.stars.map((star) => star.x));
     const maxX = Math.max(...item.stars.map((star) => star.x));
@@ -73,18 +152,13 @@ function getConstellationsForSvg(): SvgConstellation[] {
     const constellationWidth = Math.max(maxX - minX, 1);
     const constellationHeight = Math.max(maxY - minY, 1);
 
-    const targetWidth = columnWidth * 0.58;
-    const targetHeight = 150;
-
-    const milkyCenterY = milkyWayCenterY(columnCenter);
-
     const stars = item.stars.map((star) => {
       const normalizedX = (star.x - minX) / constellationWidth - 0.5;
       const normalizedY = (star.y - minY) / constellationHeight - 0.5;
 
       return {
         x: columnCenter + normalizedX * targetWidth,
-        y: milkyCenterY + normalizedY * targetHeight,
+        y: constellationCenterY + normalizedY * targetHeight,
         size: star.size,
       };
     });
@@ -96,9 +170,9 @@ function getConstellationsForSvg(): SvgConstellation[] {
       lines: item.lines,
       label: {
         x: columnCenter,
-        y: milkyCenterY + 12,
+        y: isSmallScreen ? constellationCenterY + targetHeight * 0.65 : constellationCenterY + 12,
       },
-      boundary: getColumnBoundary(index),
+      boundary,
     };
   });
 }
@@ -130,6 +204,17 @@ function createStars(count: number): Star[] {
   }));
 }
 
+function createMobileStars(count: number): Star[] {
+  const random = seededRandom(142);
+
+  return Array.from({ length: count }, () => ({
+    x: random() * 1920,
+    y: random() * 1080,
+    r: random() * 1.4 + 0.2,
+    opacity: random() * 0.55 + 0.12,
+  }));
+}
+
 function createMilkyWayStars(count: number): Star[] {
   const random = seededRandom(99);
 
@@ -146,6 +231,25 @@ function createMilkyWayStars(count: number): Star[] {
       y,
       r: random() * 1.9 + 0.35,
       opacity: random() * 0.55 + 0.2,
+    };
+  });
+}
+
+function createMobileMilkyWayStars(count: number): Star[] {
+  const random = seededRandom(199);
+
+  return Array.from({ length: count }, () => {
+    const x = random() * 1920;
+    const centerY = milkyWayCenterY(x);
+
+    const spread = (random() - 0.5) * 180 + (random() - 0.5) * 70;
+    const y = centerY + spread;
+
+    return {
+      x,
+      y,
+      r: random() * 1.45 + 0.25,
+      opacity: random() * 0.45 + 0.16,
     };
   });
 }
@@ -168,10 +272,12 @@ function getStarColor(index: number) {
   return "white";
 }
 
-function shouldSparkle(index: number) {
-  return (
-    index % 13 === 0 || index % 29 === 0 || index % 2 === 0 || index % 3 === 0
-  );
+function shouldSparkle(index: number, isSmallScreen: boolean) {
+  if (isSmallScreen) {
+    return index % 47 === 0;
+  }
+
+  return index % 13 === 0 || index % 29 === 0;
 }
 
 function getSparkleDuration(index: number) {
@@ -183,11 +289,30 @@ function getSparkleDelay(index: number) {
 }
 
 export default function ZodiacMapBackground() {
+  const isSmallScreen = useIsSmallScreen();
   const [activeId, setActiveId] = useState<string | null>(null);
 
-  const constellations = useMemo(() => getConstellationsForSvg(), []);
-  const backgroundStars = useMemo(() => createStars(1300), []);
-  const milkyWayStars = useMemo(() => createMilkyWayStars(550), []);
+  const constellations = useMemo(
+    () => getConstellationsForSvg(isSmallScreen),
+    [isSmallScreen]
+  );
+
+  const backgroundStars = useMemo(
+    () => (isSmallScreen ? createMobileStars(260) : createStars(1300)),
+    [isSmallScreen]
+  );
+
+  const milkyWayStars = useMemo(
+    () =>
+      isSmallScreen
+        ? createMobileMilkyWayStars(120)
+        : createMilkyWayStars(550),
+    [isSmallScreen]
+  );
+
+  function handleZodiacActivate(zodiacId: string) {
+    setActiveId((current) => (current === zodiacId ? null : zodiacId));
+  }
 
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-[#061116]">
@@ -236,7 +361,7 @@ export default function ZodiacMapBackground() {
 
         {/* background star field */}
         {backgroundStars.map((star, index) => {
-          const sparkle = shouldSparkle(index);
+          const sparkle = shouldSparkle(index, isSmallScreen);
           const color = getStarColor(index);
           const baseOpacity = Math.min(star.opacity + 0.5, 1);
 
@@ -378,7 +503,7 @@ export default function ZodiacMapBackground() {
                 textAnchor="middle"
                 dominantBaseline="middle"
                 fill="#f4f4f0"
-                fontSize="20"
+                fontSize={isSmallScreen ? "26" : "20"}
                 opacity={isActive ? 1 : 0}
                 filter={isActive ? "url(#brightGlow)" : undefined}
                 className="pointer-events-none select-none font-serif transition-opacity duration-300"
@@ -397,19 +522,35 @@ export default function ZodiacMapBackground() {
           );
         })}
       </svg>
-      {/* invisible 12-column horoscope hover layer */}
-      <div className="absolute inset-0 z-[5] grid grid-cols-12">
-        {zodiacOrder.map((zodiacId) => (
-          <button
-            key={zodiacId}
-            type="button"
-            aria-label={`Hover ${zodiacId}`}
-            onMouseEnter={() => setActiveId(zodiacId)}
-            onMouseLeave={() => setActiveId(null)}
-            className="h-full w-full cursor-crosshair bg-transparent"
-          />
-        ))}
-      </div>
+
+      {/* invisible horoscope hover/tap layer */}
+      {isSmallScreen ? (
+        <div className="absolute inset-0 z-[5] grid grid-cols-3 grid-rows-4 px-4 py-24">
+          {zodiacOrder.map((zodiacId) => (
+            <button
+              key={zodiacId}
+              type="button"
+              aria-label={`Tap ${zodiacId}`}
+              onPointerDown={() => handleZodiacActivate(zodiacId)}
+              className="h-full w-full touch-manipulation bg-transparent"
+            />
+          ))}
+        </div>
+      ) : (
+        <div className="absolute inset-0 z-[5] grid grid-cols-12">
+          {zodiacOrder.map((zodiacId) => (
+            <button
+              key={zodiacId}
+              type="button"
+              aria-label={`Hover ${zodiacId}`}
+              onMouseEnter={() => setActiveId(zodiacId)}
+              onMouseLeave={() => setActiveId(null)}
+              className="h-full w-full cursor-crosshair bg-transparent"
+            />
+          ))}
+        </div>
+      )}
+
       <div className="pointer-events-none absolute bottom-5 left-1/2 z-[10] -translate-x-1/2 text-center text-[10px] tracking-[0.18em] text-white/55">
         © 2026 Harry Duong. All Rights Reserved.
       </div>

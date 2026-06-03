@@ -89,46 +89,24 @@ export default function HarryWeb() {
   }, []);
 
   useEffect(() => {
-    if (!shouldShowIntro) return;
+    const sound = new Audio(audio);
+    sound.volume = 0.4;
+    sound.preload = "auto";
 
-    let index = 0;
-    let redTimeout: number | undefined;
-    let finishTimeout: number | undefined;
+    clickSoundRef.current = sound;
+  }, []);
 
-    const typing = window.setInterval(() => {
-      const nextText = fullText.slice(0, index + 1);
-      setTypedText(nextText);
-      index++;
+  const playClickSound = () => {
+    const sound = clickSoundRef.current;
+    if (!sound) return;
 
-      if (nextText === fullText) {
-        window.clearInterval(typing);
+    sound.pause();
+    sound.currentTime = 0;
 
-        redTimeout = window.setTimeout(() => {
-          setTypingDone(true);
-
-          finishTimeout = window.setTimeout(() => {
-            setIntroLeaving(true);
-
-            window.setTimeout(() => {
-              setHasPlayedIntro(true);
-            }, 800);
-          }, 200);
-        }, 800);
-      }
-    }, 120);
-
-    return () => {
-      window.clearInterval(typing);
-
-      if (redTimeout) {
-        window.clearTimeout(redTimeout);
-      }
-
-      if (finishTimeout) {
-        window.clearTimeout(finishTimeout);
-      }
-    };
-  }, [shouldShowIntro]);
+    sound.play().catch((error) => {
+      console.log("Sound play failed:", error);
+    });
+  };
 
   return (
     <main className="relative min-h-screen w-full overflow-hidden bg-black text-white">
@@ -177,7 +155,10 @@ export default function HarryWeb() {
               return (
                 <button
                   key={item.id}
-                  onClick={() => navigate(item.path)}
+                  onClick={() => {
+                    playClickSound();
+                    navigate(item.path);}}
+
                   className={`font-pixel text-[10px] uppercase tracking-[0.16em] transition-all duration-300
         hover:scale-105 hover:text-white hover:drop-shadow-[0_0_10px_rgba(255,255,255,1)]
         ${
@@ -338,8 +319,7 @@ export default function HarryWeb() {
           }`}
         >
           <h1
-            className={`relative whitespace-nowrap font-pixel text-center text-2xl leading-[1.6] tracking-[0.04em] md:text-4xl
-            transition-all duration-[1600ms] ease-in-out
+            className={`relative max-w-[90vw] whitespace-normal break-words px-4 font-pixel text-center text-2xl leading-[1.6] tracking-[0.04em] md:max-w-[80vw] md:text-4xl            transition-all duration-[1600ms] ease-in-out
             ${
               introLeaving
                 ? "text-white/0 drop-shadow-[0_0_35px_rgba(255,255,255,0.15)]"
