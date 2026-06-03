@@ -68,33 +68,50 @@ export default function HarryWeb() {
     sound.preload = "auto";
 
     clickSoundRef.current = sound;
-
-    const playGlobalClickSound = () => {
-      const sound = clickSoundRef.current;
-      if (!sound) return;
-
-      sound.pause();
-      sound.currentTime = 0;
-
-      sound.play().catch((error) => {
-        console.log("Sound play failed:", error);
-      });
-    };
-
-    document.addEventListener("pointerdown", playGlobalClickSound, true);
-
-    return () => {
-      document.removeEventListener("pointerdown", playGlobalClickSound, true);
-    };
   }, []);
 
   useEffect(() => {
-    const sound = new Audio(audio);
-    sound.volume = 0.4;
-    sound.preload = "auto";
+    if (!shouldShowIntro) return;
 
-    clickSoundRef.current = sound;
-  }, []);
+    let index = 0;
+    let redTimeout: number | undefined;
+    let finishTimeout: number | undefined;
+    let hideTimeout: number | undefined;
+
+    setTypedText("");
+    setTypingDone(false);
+    setIntroLeaving(false);
+
+    const typing = window.setInterval(() => {
+      const nextText = fullText.slice(0, index + 1);
+      setTypedText(nextText);
+      index++;
+
+      if (nextText === fullText) {
+        window.clearInterval(typing);
+
+        redTimeout = window.setTimeout(() => {
+          setTypingDone(true);
+
+          finishTimeout = window.setTimeout(() => {
+            setIntroLeaving(true);
+
+            hideTimeout = window.setTimeout(() => {
+              setHasPlayedIntro(true);
+            }, 800);
+          }, 200);
+        }, 800);
+      }
+    }, 120);
+
+    return () => {
+      window.clearInterval(typing);
+
+      if (redTimeout) window.clearTimeout(redTimeout);
+      if (finishTimeout) window.clearTimeout(finishTimeout);
+      if (hideTimeout) window.clearTimeout(hideTimeout);
+    };
+  }, [shouldShowIntro, fullText]);
 
   const playClickSound = () => {
     const sound = clickSoundRef.current;
@@ -157,15 +174,15 @@ export default function HarryWeb() {
                   key={item.id}
                   onClick={() => {
                     playClickSound();
-                    navigate(item.path);}}
-
+                    navigate(item.path);
+                  }}
                   className={`font-pixel text-[10px] uppercase tracking-[0.16em] transition-all duration-300
-        hover:scale-105 hover:text-white hover:drop-shadow-[0_0_10px_rgba(255,255,255,1)]
-        ${
-          isActive
-            ? "text-white/85"
-            : "text-red-400 drop-shadow-[0_0_10px_rgba(248,113,113,0.8)]"
-        }`}
+                  hover:scale-105 hover:text-white hover:drop-shadow-[0_0_10px_rgba(255,255,255,1)]
+                  ${
+                    isActive
+                      ? "text-white/85"
+                      : "text-red-400 drop-shadow-[0_0_10px_rgba(248,113,113,0.8)]"
+                  }`}
                 >
                   {item.label}
                 </button>
@@ -176,6 +193,7 @@ export default function HarryWeb() {
               href="/harry_resume.pdf"
               target="_blank"
               rel="noreferrer"
+              onClick={playClickSound}
               className="font-pixel text-[10px] uppercase tracking-[0.16em] text-red-400 drop-shadow-[0_0_10px_rgba(248,113,113,0.8)] transition-all duration-300 hover:scale-105 hover:text-white hover:drop-shadow-[0_0_10px_rgba(255,255,255,1)]"
             >
               Resume
@@ -211,14 +229,20 @@ export default function HarryWeb() {
         <div className="md:hidden">
           <div className="flex items-center justify-between rounded-full border border-white/10 bg-black/40 px-5 py-4 backdrop-blur-md">
             <button
-              onClick={() => navigate("/")}
+              onClick={() => {
+                playClickSound();
+                navigate("/");
+              }}
               className="font-pixel text-[10px] uppercase tracking-[0.25em] text-red-400 drop-shadow-[0_0_10px_rgba(248,113,113,0.8)]"
             >
               Harry
             </button>
 
             <button
-              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              onClick={() => {
+                playClickSound();
+                setMobileMenuOpen((prev) => !prev);
+              }}
               aria-label="Toggle navigation menu"
               aria-expanded={mobileMenuOpen}
               className="text-2xl text-white/80 transition hover:scale-110 hover:text-red-300"
@@ -240,6 +264,7 @@ export default function HarryWeb() {
                   <button
                     key={item.id}
                     onClick={() => {
+                      playClickSound();
                       navigate(item.path);
                       setMobileMenuOpen(false);
                     }}
@@ -261,7 +286,10 @@ export default function HarryWeb() {
                 href="/harry_resume.pdf"
                 target="_blank"
                 rel="noreferrer"
-                onClick={() => setMobileMenuOpen(false)}
+                onClick={() => {
+                  playClickSound();
+                  setMobileMenuOpen(false);
+                }}
                 className="text-left font-pixel text-[10px] uppercase tracking-[0.18em] text-red-400 drop-shadow-[0_0_10px_rgba(248,113,113,0.8)] transition-all duration-300 hover:translate-x-1 hover:text-white"
               >
                 Resume
@@ -319,7 +347,8 @@ export default function HarryWeb() {
           }`}
         >
           <h1
-            className={`relative max-w-[90vw] whitespace-normal break-words px-4 font-pixel text-center text-2xl leading-[1.6] tracking-[0.04em] md:max-w-[80vw] md:text-4xl            transition-all duration-[1600ms] ease-in-out
+            className={`relative max-w-[90vw] whitespace-normal break-words px-4 font-pixel text-center text-2xl leading-[1.6] tracking-[0.04em] md:max-w-[80vw] md:text-4xl
+            transition-all duration-[1600ms] ease-in-out
             ${
               introLeaving
                 ? "text-white/0 drop-shadow-[0_0_35px_rgba(255,255,255,0.15)]"
@@ -344,9 +373,7 @@ export default function HarryWeb() {
               typedText
             )}
 
-            <span className="absolute left-full ml-2 animate-pulse text-white">
-              |
-            </span>
+            <span className="ml-2 animate-pulse text-white">|</span>
           </h1>
         </div>
       )}
