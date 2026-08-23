@@ -19,9 +19,9 @@ export const navItems = [
     label: "Professionals",
     path: "/professionals",
   },
-  {
-    id: "interests",
-    label: "Interests",
-    path: "/interests",
-  },
+  // {
+  //   id: "interests",
+  //   label: "Interests",
+  //   path: "/interests",
+  // },
 ] as const;

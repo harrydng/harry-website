@@ -1,3 +1,5 @@
+import { techStack } from "../../../data/tech-stack";
+
 export default function AboutMe() {
   return (
     <section className="pointer-events-auto min-h-screen px-6 pb-24 pt-14 text-white md:px-10 lg:px-16">
@@ -31,36 +33,41 @@ export default function AboutMe() {
           <h2 className="font-serif text-4xl font-semibold uppercase leading-[0.95] tracking-[-0.025em] text-white md:text-6xl lg:text-7xl">
             A Life Built From
             <br />
-            Curiosity & Side Quests
+            Curiosity &amp; Side Quests
           </h2>
 
-          <p className="mx-auto mt-5 max-w-4xl font-serif text-sm italic leading-6 text-white/65 md:text-base">
-            Computer science, finance, food, travel, unfinished ideas, and the need to be and do everything.
+          <p className="mx-auto mt-5 max-w-4xl font-serif text-sm italic leading-6 text-white/75 md:text-base">
+            Computer science, finance, food, travel, and a personality shaped by
+            curiosity, optimism, rational thinking, and a willingness to try
+            things.
           </p>
         </div>
 
         {/* Metadata row */}
         <div className="grid border-b border-red-400/40 text-center font-serif sm:grid-cols-3">
           <div className="border-b border-red-400/20 px-4 py-4 sm:border-b-0 sm:border-r">
-            <p className="text-[8px] uppercase tracking-[0.35em] text-red-300/60">
+            <p className="text-[8px] uppercase tracking-[0.35em] text-red-300/70">
               University
             </p>
+
             <p className="mt-2 text-sm font-semibold text-white/90">
               Northeastern University
             </p>
           </div>
 
           <div className="border-b border-red-400/20 px-4 py-4 sm:border-b-0 sm:border-r">
-            <p className="text-[8px] uppercase tracking-[0.35em] text-red-300/60">
+            <p className="text-[8px] uppercase tracking-[0.35em] text-red-300/70">
               Year
             </p>
+
             <p className="mt-2 text-sm font-semibold text-white/90">5th Year</p>
           </div>
 
           <div className="px-4 py-4">
-            <p className="text-[8px] uppercase tracking-[0.35em] text-red-300/60">
+            <p className="text-[8px] uppercase tracking-[0.35em] text-red-300/70">
               Studies
             </p>
+
             <p className="mt-2 text-sm font-semibold text-white/90">
               Computer Science &amp; Finance
             </p>
@@ -70,9 +77,9 @@ export default function AboutMe() {
         {/* Feature story */}
         <article className="border-b border-red-400/40 py-8">
           <div className="grid gap-8 lg:grid-cols-12">
-            {/* Left story column */}
+            {/* Left column */}
             <div className="lg:col-span-4 lg:border-r lg:border-red-400/30 lg:pr-8">
-              <p className="mb-3 font-serif text-[9px] uppercase tracking-[0.35em] text-red-300/70">
+              <p className="mb-3 font-serif text-[9px] uppercase tracking-[0.35em] text-red-300/80">
                 The Profile
               </p>
 
@@ -81,11 +88,11 @@ export default function AboutMe() {
                 on one.
               </h3>
 
-              <p className="mt-4 font-serif text-sm italic leading-6 text-white/60">
+              <p className="mt-4 font-serif text-sm italic leading-6 text-white/70">
                 By Harry Duong · Boston
               </p>
 
-              <div className="mt-6 font-serif text-[15px] leading-7 text-white/80">
+              <div className="mt-6 font-serif text-[15px] leading-7 text-white/85">
                 <p>
                   <span className="float-left mr-3 mt-1 font-serif text-7xl font-bold leading-[0.7] text-red-400">
                     W
@@ -100,31 +107,28 @@ export default function AboutMe() {
                   It&apos;s part portfolio, part digital scrapbook, and part
                   record of whatever I happen to be interested in at the moment.
                   Some sections are serious. Others exist simply because I
-                  thought they would be fun to build.
+                  thought they would describe me as a person.
                 </p>
               </div>
             </div>
 
             {/* Center image */}
             <figure className="lg:col-span-5">
-              <div className="relative aspect-[3.5/3] w-full overflow-hidden border border-red-400/40">
-
+              <div className="group relative aspect-[3.5/3] w-full overflow-hidden border border-red-400/40">
                 <img
                   src="/about_me_profile.jpg"
                   alt="Harry"
-                  className="h-full w-full object-cover object-[50%_80%]"
+                  className="h-full w-full object-cover object-[50%_80%] transition-transform duration-700 ease-out group-hover:scale-105"
                 />
               </div>
 
-              <figcaption className="mt-3 border-b border-red-400/20 pb-3 font-serif text-[11px] italic leading-5 text-white/50">
-                A small glimpse into the life behind the code — usually
-                somewhere between building something, traveling somewhere, or
-                deciding what to bake next.
+              <figcaption className="mt-3 border-b border-red-400/20 pb-3 font-serif text-[11px] italic leading-5 text-white/70">
+                A small glimpse into my life.
               </figcaption>
             </figure>
 
             {/* Right column */}
-            <div className="font-serif text-[15px] leading-7 text-white/80 lg:col-span-3 lg:border-l lg:border-red-400/30 lg:pl-8">
+            <div className="font-serif text-[15px] leading-7 text-white/85 lg:col-span-3 lg:border-l lg:border-red-400/30 lg:pl-8">
               <p>
                 Growing up has taught me that there&apos;s very little value in
                 spending life worrying about looking embarrassing, making the
@@ -142,8 +146,7 @@ export default function AboutMe() {
               <p className="mt-5">
                 I don&apos;t think everything I do needs to fit neatly into one
                 category. I like technology, but I also care about food,
-                creativity, people, places, and experiences that have absolutely
-                nothing to do with a computer.
+                creativity, people, places, and experiences.
               </p>
             </div>
           </div>
@@ -151,8 +154,9 @@ export default function AboutMe() {
 
         {/* Second newspaper section */}
         <section className="grid border-b border-red-400/40 py-8 lg:grid-cols-12">
+          {/* Philosophy */}
           <aside className="mb-8 lg:col-span-3 lg:mb-0 lg:border-r lg:border-red-400/30 lg:pr-8">
-            <p className="font-serif text-[9px] uppercase tracking-[0.35em] text-red-300/70">
+            <p className="font-serif text-[9px] uppercase tracking-[0.35em] text-red-300/80">
               Philosophy
             </p>
 
@@ -163,19 +167,19 @@ export default function AboutMe() {
 
             <div className="mt-6 h-px bg-red-400/30" />
 
-            <p className="mt-5 font-serif text-xs leading-5 text-white/50">
+            <p className="mt-5 font-serif text-xs leading-5 text-white/70">
               An unofficial rule for projects, travel plans, hobbies, and most
               decisions made with friends.
             </p>
           </aside>
 
-          {/* Long body */}
+          {/* Beyond screen */}
           <div className="lg:col-span-9 lg:pl-8">
             <h3 className="font-serif text-3xl font-semibold leading-tight text-white md:text-4xl">
               Beyond the Screen
             </h3>
 
-            <div className="mt-5 font-serif text-[15px] leading-7 text-white/80 md:columns-2 md:gap-10 lg:columns-3">
+            <div className="mt-5 font-serif text-[15px] leading-7 text-white/85 md:columns-2 md:gap-10 lg:columns-3">
               <p>
                 Outside of school and work, I spend a lot of time cooking and
                 baking. There&apos;s something satisfying about starting with a
@@ -188,22 +192,20 @@ export default function AboutMe() {
               <p className="mt-5 md:mt-0">
                 I also love traveling and exploring new places. I&apos;m usually
                 the person stopping for photos, looking for somewhere good to
-                eat, or convincing everyone that a completely unnecessary
-                detour will probably be worth it.
+                eat, or convincing everyone that a completely unnecessary detour
+                will probably be worth it.
               </p>
 
               <p className="mt-5 md:mt-0">
                 Hiking and being outdoors give me a break from constantly
-                thinking about what needs to be built, fixed, submitted, or
-                debugged. The gym does something similar, although with
+                thinking about what needs to be built or submitted. The gym does something similar, although with
                 significantly fewer scenic views.
               </p>
 
               <p className="mt-5">
                 Technology is still one of the biggest parts of my life. I enjoy
                 figuring out how systems work, designing products, solving
-                problems, and turning an idea into something people can
-                actually interact with.
+                problems, and figuring out what can be made better.
               </p>
 
               <p className="mt-5">
@@ -224,8 +226,73 @@ export default function AboutMe() {
           </div>
         </section>
 
+        {/* Technical Index */}
+        <section className="border-b border-red-400/40 py-8">
+          {/* Section header */}
+          <div className="flex flex-col gap-4 border-b border-red-400/30 pb-6 md:flex-row md:items-end md:justify-between">
+            <div>
+              <p className="font-serif text-[9px] font-bold uppercase tracking-[0.4em] text-red-300/80">
+                Technical Index
+              </p>
+
+              <h3 className="mt-2 font-serif text-3xl font-semibold text-white md:text-4xl">
+                Languages, Frameworks &amp; Tools
+              </h3>
+            </div>
+
+            <p className="font-serif text-[9px] uppercase tracking-[0.3em] text-white/60">
+              {String(techStack.length).padStart(2, "0")} Technologies
+            </p>
+          </div>
+
+          {/* Tech grid */}
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {techStack.map((tech, index) => {
+              const Icon = tech.Icon;
+
+              return (
+                <div
+                  key={tech.id}
+                  className="
+                    group
+                    flex items-center justify-between
+                    border-b border-red-400/20
+                    px-4 py-5
+                    transition-all duration-300
+                    hover:bg-red-500/[0.04]
+                    sm:border-r
+                  "
+                >
+                  <div className="flex items-center gap-4">
+                    {/* Icon */}
+                    <span className="text-xl text-red-400/80 transition-all duration-300 group-hover:scale-110 group-hover:text-red-300">
+                      <Icon />
+                    </span>
+
+                    {/* Name */}
+                    <div>
+                      <p className="font-serif text-sm font-semibold text-white/90 transition-colors group-hover:text-white">
+                        {tech.name}
+                      </p>
+
+                      <p className="mt-1 font-serif text-[8px] uppercase tracking-[0.25em] text-white/45">
+                        Technology
+                      </p>
+                    </div>
+                  </div>
+
+                  {/* Number */}
+                  <span className="font-serif text-[10px] text-red-400/50">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
         {/* Bottom strip */}
-        <footer className="flex flex-col gap-3 py-5 font-serif text-[9px] uppercase tracking-[0.25em] text-red-300/60 sm:flex-row sm:items-center sm:justify-between">
+        <footer className="flex flex-col gap-3 py-5 font-serif text-[9px] uppercase tracking-[0.25em] text-red-300/70 sm:flex-row sm:items-center sm:justify-between">
           <span>Harry Duong · Personal Archives</span>
           <span>Computer Science · Finance · Everything Else</span>
           <span>Est. 2026</span>

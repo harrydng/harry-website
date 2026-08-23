@@ -6,7 +6,7 @@ import ZodiacMapBackground from "./main/zodiacMapBackground";
 import AboutMe from "./main/aboutMePage";
 import Projects from "./main/projectsPage";
 import Professionals from "./main/professionalsPage";
-import Interests from "./main/interestsPage";
+// import Interests from "./main/interestsPage";
 
 import {
   Routes,
@@ -326,7 +326,7 @@ export default function HarryWeb() {
           <Route path="/aboutme" element={<AboutMe />} />
           <Route path="/projects" element={<Projects />} />
           <Route path="/professionals" element={<Professionals />} />
-          <Route path="/interests" element={<Interests />} />
+          {/* <Route path="/interests" element={<Interests />} /> */}
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
