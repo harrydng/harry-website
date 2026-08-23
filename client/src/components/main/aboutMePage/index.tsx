@@ -35,8 +35,7 @@ export default function AboutMe() {
           </h2>
 
           <p className="mx-auto mt-5 max-w-4xl font-serif text-sm italic leading-6 text-white/65 md:text-base">
-            Computer science, finance, food, travel, unfinished ideas, and the
-            occasional decision made far too late at night.
+            Computer science, finance, food, travel, unfinished ideas, and the need to be and do everything.
           </p>
         </div>
 
