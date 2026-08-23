@@ -77,72 +77,18 @@ function getColumnBoundary(index: number): SvgPoint[] {
   ];
 }
 
-function getMobileBoundary(index: number): SvgPoint[] {
-  const columns = 3;
-  const rows = 4;
-
-  const gridWidth = 860;
-  const gridHeight = 720;
-
-  const startX = (VIEWBOX_WIDTH - gridWidth) / 2;
-  const startY = 180;
-
-  const cellWidth = gridWidth / columns;
-  const cellHeight = gridHeight / rows;
-
-  const col = index % columns;
-  const row = Math.floor(index / columns);
-
-  const x1 = startX + col * cellWidth;
-  const x2 = x1 + cellWidth;
-  const y1 = startY + row * cellHeight;
-  const y2 = y1 + cellHeight;
-
-  return [
-    { x: x1, y: y1 },
-    { x: x2, y: y1 },
-    { x: x2, y: y2 },
-    { x: x1, y: y2 },
-  ];
-}
-
-function getConstellationsForSvg(isSmallScreen: boolean): SvgConstellation[] {
+function getConstellationsForSvg(): SvgConstellation[] {
   const columnWidth = VIEWBOX_WIDTH / 12;
 
   return zodiacConstellations.map((item, index) => {
-    let columnCenter: number;
-    let constellationCenterY: number;
-    let targetWidth: number;
-    let targetHeight: number;
-    let boundary: SvgPoint[];
+    const columnStart = index * columnWidth;
 
-    if (isSmallScreen) {
-      const columns = 3;
-      const gridWidth = 860;
-      const startX = (VIEWBOX_WIDTH - gridWidth) / 2;
-      const startY = 180;
-      const cellWidth = gridWidth / 3;
-      const cellHeight = 720 / 4;
+    const columnCenter = columnStart + columnWidth / 2;
+    const constellationCenterY = milkyWayCenterY(columnCenter);
 
-      const col = index % columns;
-      const row = Math.floor(index / columns);
-
-      columnCenter = startX + col * cellWidth + cellWidth / 2;
-      constellationCenterY = startY + row * cellHeight + cellHeight / 2;
-
-      targetWidth = cellWidth * 0.48;
-      targetHeight = cellHeight * 0.42;
-      boundary = getMobileBoundary(index);
-    } else {
-      const columnStart = index * columnWidth;
-
-      columnCenter = columnStart + columnWidth / 2;
-      constellationCenterY = milkyWayCenterY(columnCenter);
-
-      targetWidth = columnWidth * 0.58;
-      targetHeight = 150;
-      boundary = getColumnBoundary(index);
-    }
+    const targetWidth = columnWidth * 0.58;
+    const targetHeight = 150;
+    const boundary = getColumnBoundary(index);
 
     const minX = Math.min(...item.stars.map((star) => star.x));
     const maxX = Math.max(...item.stars.map((star) => star.x));
@@ -170,7 +116,7 @@ function getConstellationsForSvg(isSmallScreen: boolean): SvgConstellation[] {
       lines: item.lines,
       label: {
         x: columnCenter,
-        y: isSmallScreen ? constellationCenterY + targetHeight * 0.65 : constellationCenterY + 12,
+        y: constellationCenterY + 12,
       },
       boundary,
     };
@@ -204,17 +150,6 @@ function createStars(count: number): Star[] {
   }));
 }
 
-function createMobileStars(count: number): Star[] {
-  const random = seededRandom(142);
-
-  return Array.from({ length: count }, () => ({
-    x: random() * 1920,
-    y: random() * 1080,
-    r: random() * 1.4 + 0.2,
-    opacity: random() * 0.55 + 0.12,
-  }));
-}
-
 function createMilkyWayStars(count: number): Star[] {
   const random = seededRandom(99);
 
@@ -231,25 +166,6 @@ function createMilkyWayStars(count: number): Star[] {
       y,
       r: random() * 1.9 + 0.35,
       opacity: random() * 0.55 + 0.2,
-    };
-  });
-}
-
-function createMobileMilkyWayStars(count: number): Star[] {
-  const random = seededRandom(199);
-
-  return Array.from({ length: count }, () => {
-    const x = random() * 1920;
-    const centerY = milkyWayCenterY(x);
-
-    const spread = (random() - 0.5) * 180 + (random() - 0.5) * 70;
-    const y = centerY + spread;
-
-    return {
-      x,
-      y,
-      r: random() * 1.45 + 0.25,
-      opacity: random() * 0.45 + 0.16,
     };
   });
 }
@@ -272,11 +188,7 @@ function getStarColor(index: number) {
   return "white";
 }
 
-function shouldSparkle(index: number, isSmallScreen: boolean) {
-  if (isSmallScreen) {
-    return index % 47 === 0;
-  }
-
+function shouldSparkle(index: number) {
   return index % 13 === 0 || index % 29 === 0;
 }
 
@@ -293,26 +205,19 @@ export default function ZodiacMapBackground() {
   const [activeId, setActiveId] = useState<string | null>(null);
 
   const constellations = useMemo(
-    () => getConstellationsForSvg(isSmallScreen),
+    () => (isSmallScreen ? [] : getConstellationsForSvg()),
     [isSmallScreen]
   );
 
   const backgroundStars = useMemo(
-    () => (isSmallScreen ? createMobileStars(260) : createStars(1300)),
+    () => (isSmallScreen ? [] : createStars(1300)),
     [isSmallScreen]
   );
 
   const milkyWayStars = useMemo(
-    () =>
-      isSmallScreen
-        ? createMobileMilkyWayStars(120)
-        : createMilkyWayStars(550),
+    () => (isSmallScreen ? [] : createMilkyWayStars(550)),
     [isSmallScreen]
   );
-
-  function handleZodiacActivate(zodiacId: string) {
-    setActiveId((current) => (current === zodiacId ? null : zodiacId));
-  }
 
   return (
     <div className="relative h-screen w-screen overflow-hidden bg-[#061116]">
@@ -322,233 +227,223 @@ export default function ZodiacMapBackground() {
       {/* full-screen grid */}
       <div className="absolute inset-0 opacity-[0.5] bg-[linear-gradient(rgba(130,210,225,0.14)_1px,transparent_1px),linear-gradient(90deg,rgba(130,210,225,0.14)_1px,transparent_1px)] bg-[size:8.333%_11.111%]" />
 
-      {/* dark blue glow layers */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-[-12%] top-[8%] h-[55%] w-[45%] rounded-full bg-[#2d3a5e]/25 blur-[300px]" />
-        <div className="absolute right-[-10%] top-[18%] h-[48%] w-[42%] rounded-full bg-[#2d3a5e]/22 blur-[190px]" />
-      </div>
+      {!isSmallScreen && (
+        <>
+          {/* dark blue glow layers */}
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute left-[-12%] top-[8%] h-[55%] w-[45%] rounded-full bg-[#2d3a5e]/25 blur-[300px]" />
+            <div className="absolute right-[-10%] top-[18%] h-[48%] w-[42%] rounded-full bg-[#2d3a5e]/22 blur-[190px]" />
+          </div>
 
-      {/* Milky Way cloud, CSS version */}
-      <div className="pointer-events-none absolute inset-0 opacity-30">
-        <div className="absolute bottom-[-18%] left-[-12%] h-[58%] w-[130%] rotate-[-8deg] rounded-[40%] bg-[radial-gradient(ellipse_at_center,rgba(214,220,226,0.16),rgba(214,220,226,0.07)_30%,rgba(214,220,226,0.02)_55%,transparent_74%)] blur-[300px]" />
-        <div className="absolute bottom-[5%] left-[2%] h-[30%] w-[95%] rotate-[-6deg] rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(200,208,216,0.10),rgba(200,208,216,0.035)_45%,transparent_76%)] blur-[300px]" />
-      </div>
+          {/* Milky Way cloud, CSS version */}
+          <div className="pointer-events-none absolute inset-0 opacity-30">
+            <div className="absolute bottom-[-18%] left-[-12%] h-[58%] w-[130%] rotate-[-8deg] rounded-[40%] bg-[radial-gradient(ellipse_at_center,rgba(214,220,226,0.16),rgba(214,220,226,0.07)_30%,rgba(214,220,226,0.02)_55%,transparent_74%)] blur-[300px]" />
+            <div className="absolute bottom-[5%] left-[2%] h-[30%] w-[95%] rotate-[-6deg] rounded-[50%] bg-[radial-gradient(ellipse_at_center,rgba(200,208,216,0.10),rgba(200,208,216,0.035)_45%,transparent_76%)] blur-[300px]" />
+          </div>
 
-      <svg
-        className="absolute inset-0 h-full w-full"
-        viewBox="0 0 1920 1080"
-        preserveAspectRatio="xMidYMid slice"
-      >
-        <defs>
-          <filter id="brightGlow">
-            <feGaussianBlur stdDeviation="4.5" result="blur" />
-            <feMerge>
-              <feMergeNode in="blur" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
+          <svg
+            className="absolute inset-0 h-full w-full"
+            viewBox="0 0 1920 1080"
+            preserveAspectRatio="xMidYMid slice"
+          >
+            <defs>
+              <filter id="brightGlow">
+                <feGaussianBlur stdDeviation="4.5" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
 
-          <linearGradient id="milkyBandGradient" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" stopColor="rgba(255,255,255,0.00)" />
-            <stop offset="15%" stopColor="rgba(255,255,255,0.04)" />
-            <stop offset="32%" stopColor="rgba(255,255,255,0.12)" />
-            <stop offset="50%" stopColor="rgba(255,255,255,0.18)" />
-            <stop offset="68%" stopColor="rgba(255,255,255,0.10)" />
-            <stop offset="85%" stopColor="rgba(255,255,255,0.04)" />
-            <stop offset="100%" stopColor="rgba(255,255,255,0.00)" />
-          </linearGradient>
-        </defs>
+              <linearGradient id="milkyBandGradient" x1="0" y1="0" x2="1" y2="0">
+                <stop offset="0%" stopColor="rgba(255,255,255,0.00)" />
+                <stop offset="15%" stopColor="rgba(255,255,255,0.04)" />
+                <stop offset="32%" stopColor="rgba(255,255,255,0.12)" />
+                <stop offset="50%" stopColor="rgba(255,255,255,0.18)" />
+                <stop offset="68%" stopColor="rgba(255,255,255,0.10)" />
+                <stop offset="85%" stopColor="rgba(255,255,255,0.04)" />
+                <stop offset="100%" stopColor="rgba(255,255,255,0.00)" />
+              </linearGradient>
+            </defs>
 
-        {/* background star field */}
-        {backgroundStars.map((star, index) => {
-          const sparkle = shouldSparkle(index, isSmallScreen);
-          const color = getStarColor(index);
-          const baseOpacity = Math.min(star.opacity + 0.5, 1);
+            {/* background star field */}
+            {backgroundStars.map((star, index) => {
+              const sparkle = shouldSparkle(index);
+              const color = getStarColor(index);
+              const baseOpacity = Math.min(star.opacity + 0.5, 1);
 
-          return (
-            <g
-              key={`bg-${index}`}
-              style={
-                sparkle
-                  ? ({
-                      transformBox: "fill-box",
-                      transformOrigin: "center",
-                      "--base-opacity": baseOpacity,
-                      animation: `starSparkle ${getSparkleDuration(
-                        index
-                      )} ease-in-out infinite`,
-                      animationDelay: getSparkleDelay(index),
-                    } as React.CSSProperties)
-                  : undefined
-              }
-            >
-              <circle
-                cx={star.x}
-                cy={star.y}
-                r={star.r * 3.2}
-                fill={color}
-                opacity={star.opacity * 0.08}
-              />
-
-              <circle
-                cx={star.x}
-                cy={star.y}
-                r={star.r}
-                fill={color}
-                opacity={baseOpacity}
-              />
-            </g>
-          );
-        })}
-
-        {/* concentrated stars inside the white band */}
-        {milkyWayStars.map((star, index) => {
-          const drift = getMilkyWayDrift(index);
-
-          return (
-            <g
-              key={`mw-${index}`}
-              className="will-change-transform"
-              style={
-                {
-                  "--drift-x": drift.x,
-                  "--drift-y": drift.y,
-                  animation: `driftAlongMilkyWay ${drift.duration} ease-in-out infinite`,
-                  animationDelay: drift.delay,
-                } as React.CSSProperties
-              }
-            >
-              <circle
-                cx={star.x}
-                cy={star.y}
-                r={star.r * 3.5}
-                fill={getStarColor(index + 1000)}
-                opacity={star.opacity * 0.12}
-              />
-              <circle
-                cx={star.x}
-                cy={star.y}
-                r={star.r * 1.2}
-                fill={getStarColor(index + 1000)}
-                opacity={Math.min(star.opacity + 0.3, 1)}
-              />
-            </g>
-          );
-        })}
-
-        {/* constellation boundaries + lines + stars */}
-        {constellations.map((item) => {
-          const isActive = activeId === item.id;
-
-          return (
-            <g key={item.id} className="pointer-events-none">
-              <polygon
-                points={item.boundary.map((p) => `${p.x},${p.y}`).join(" ")}
-                fill="transparent"
-                stroke="transparent"
-              />
-
-              {item.lines.map(([from, to], index) => {
-                const start = item.stars[from];
-                const end = item.stars[to];
-
-                return (
-                  <line
-                    key={index}
-                    x1={start.x}
-                    y1={start.y}
-                    x2={end.x}
-                    y2={end.y}
-                    stroke={
-                      isActive
-                        ? "rgba(245, 248, 250, 0.24)"
-                        : "rgba(166,128,66,0.42)"
-                    }
-                    strokeWidth={isActive ? 2.4 : 1}
-                    opacity={isActive ? 1 : 0.55}
-                    filter={isActive ? "url(#brightGlow)" : undefined}
+              return (
+                <g
+                  key={`bg-${index}`}
+                  style={
+                    sparkle
+                      ? ({
+                          transformBox: "fill-box",
+                          transformOrigin: "center",
+                          "--base-opacity": baseOpacity,
+                          animation: `starSparkle ${getSparkleDuration(
+                            index
+                          )} ease-in-out infinite`,
+                          animationDelay: getSparkleDelay(index),
+                        } as React.CSSProperties)
+                      : undefined
+                  }
+                >
+                  <circle
+                    cx={star.x}
+                    cy={star.y}
+                    r={star.r * 3.2}
+                    fill={color}
+                    opacity={star.opacity * 0.08}
                   />
-                );
-              })}
 
-              {/* Constellation stars */}
-              {item.stars.map((star, index) => {
-                const baseSize = star.size ?? 1.2;
+                  <circle
+                    cx={star.x}
+                    cy={star.y}
+                    r={star.r}
+                    fill={color}
+                    opacity={baseOpacity}
+                  />
+                </g>
+              );
+            })}
 
-                return (
-                  <g key={index}>
-                    <circle
-                      cx={star.x}
-                      cy={star.y}
-                      r={isActive ? baseSize * 9 : baseSize * 3.4}
-                      fill={isActive ? "#f1f5f7" : "#c8b17a"}
-                      opacity={isActive ? 0.22 : 0.08}
-                    />
+            {/* concentrated stars inside the white band */}
+            {milkyWayStars.map((star, index) => {
+              const drift = getMilkyWayDrift(index);
 
-                    <circle
-                      cx={star.x}
-                      cy={star.y}
-                      r={isActive ? baseSize * 4.3 : baseSize * 2.1}
-                      fill={isActive ? "#f8fbff" : "#d7c18a"}
-                      opacity={isActive ? 1 : 0.75}
-                      filter={isActive ? "url(#brightGlow)" : undefined}
-                    />
-                  </g>
-                );
-              })}
+              return (
+                <g
+                  key={`mw-${index}`}
+                  className="will-change-transform"
+                  style={
+                    {
+                      "--drift-x": drift.x,
+                      "--drift-y": drift.y,
+                      animation: `driftAlongMilkyWay ${drift.duration} ease-in-out infinite`,
+                      animationDelay: drift.delay,
+                    } as React.CSSProperties
+                  }
+                >
+                  <circle
+                    cx={star.x}
+                    cy={star.y}
+                    r={star.r * 3.5}
+                    fill={getStarColor(index + 1000)}
+                    opacity={star.opacity * 0.12}
+                  />
+                  <circle
+                    cx={star.x}
+                    cy={star.y}
+                    r={star.r * 1.2}
+                    fill={getStarColor(index + 1000)}
+                    opacity={Math.min(star.opacity + 0.3, 1)}
+                  />
+                </g>
+              );
+            })}
 
-              <text
-                x={item.label.x}
-                y={item.label.y}
-                textAnchor="middle"
-                dominantBaseline="middle"
-                fill="#f4f4f0"
-                fontSize={isSmallScreen ? "26" : "20"}
-                opacity={isActive ? 1 : 0}
-                filter={isActive ? "url(#brightGlow)" : undefined}
-                className="pointer-events-none select-none font-serif transition-opacity duration-300"
-              >
-                {item.name}
-              </text>
+            {/* constellation boundaries + lines + stars */}
+            {constellations.map((item) => {
+              const isActive = activeId === item.id;
 
-              {/* larger hover area */}
-              <polygon
-                points={item.boundary.map((p) => `${p.x},${p.y}`).join(" ")}
-                fill="transparent"
-                stroke="transparent"
-                strokeWidth="28"
+              return (
+                <g key={item.id} className="pointer-events-none">
+                  <polygon
+                    points={item.boundary.map((p) => `${p.x},${p.y}`).join(" ")}
+                    fill="transparent"
+                    stroke="transparent"
+                  />
+
+                  {item.lines.map(([from, to], index) => {
+                    const start = item.stars[from];
+                    const end = item.stars[to];
+
+                    return (
+                      <line
+                        key={index}
+                        x1={start.x}
+                        y1={start.y}
+                        x2={end.x}
+                        y2={end.y}
+                        stroke={
+                          isActive
+                            ? "rgba(245, 248, 250, 0.24)"
+                            : "rgba(166,128,66,0.42)"
+                        }
+                        strokeWidth={isActive ? 2.4 : 1}
+                        opacity={isActive ? 1 : 0.55}
+                        filter={isActive ? "url(#brightGlow)" : undefined}
+                      />
+                    );
+                  })}
+
+                  {/* Constellation stars */}
+                  {item.stars.map((star, index) => {
+                    const baseSize = star.size ?? 1.2;
+
+                    return (
+                      <g key={index}>
+                        <circle
+                          cx={star.x}
+                          cy={star.y}
+                          r={isActive ? baseSize * 9 : baseSize * 3.4}
+                          fill={isActive ? "#f1f5f7" : "#c8b17a"}
+                          opacity={isActive ? 0.22 : 0.08}
+                        />
+
+                        <circle
+                          cx={star.x}
+                          cy={star.y}
+                          r={isActive ? baseSize * 4.3 : baseSize * 2.1}
+                          fill={isActive ? "#f8fbff" : "#d7c18a"}
+                          opacity={isActive ? 1 : 0.75}
+                          filter={isActive ? "url(#brightGlow)" : undefined}
+                        />
+                      </g>
+                    );
+                  })}
+
+                  <text
+                    x={item.label.x}
+                    y={item.label.y}
+                    textAnchor="middle"
+                    dominantBaseline="middle"
+                    fill="#f4f4f0"
+                    fontSize="20"
+                    opacity={isActive ? 1 : 0}
+                    filter={isActive ? "url(#brightGlow)" : undefined}
+                    className="pointer-events-none select-none font-serif transition-opacity duration-300"
+                  >
+                    {item.name}
+                  </text>
+
+                  {/* larger hover area */}
+                  <polygon
+                    points={item.boundary.map((p) => `${p.x},${p.y}`).join(" ")}
+                    fill="transparent"
+                    stroke="transparent"
+                    strokeWidth="28"
+                  />
+                </g>
+              );
+            })}
+          </svg>
+
+          {/* invisible horoscope hover layer */}
+          <div className="absolute inset-0 z-[5] grid grid-cols-12">
+            {zodiacOrder.map((zodiacId) => (
+              <button
+                key={zodiacId}
+                type="button"
+                aria-label={`Hover ${zodiacId}`}
+                onMouseEnter={() => setActiveId(zodiacId)}
+                onMouseLeave={() => setActiveId(null)}
+                className="h-full w-full cursor-crosshair bg-transparent"
               />
-            </g>
-          );
-        })}
-      </svg>
-
-      {/* invisible horoscope hover/tap layer */}
-      {isSmallScreen ? (
-        <div className="absolute inset-0 z-[5] grid grid-cols-3 grid-rows-4 px-4 py-24">
-          {zodiacOrder.map((zodiacId) => (
-            <button
-              key={zodiacId}
-              type="button"
-              aria-label={`Tap ${zodiacId}`}
-              onPointerDown={() => handleZodiacActivate(zodiacId)}
-              className="h-full w-full touch-manipulation bg-transparent"
-            />
-          ))}
-        </div>
-      ) : (
-        <div className="absolute inset-0 z-[5] grid grid-cols-12">
-          {zodiacOrder.map((zodiacId) => (
-            <button
-              key={zodiacId}
-              type="button"
-              aria-label={`Hover ${zodiacId}`}
-              onMouseEnter={() => setActiveId(zodiacId)}
-              onMouseLeave={() => setActiveId(null)}
-              className="h-full w-full cursor-crosshair bg-transparent"
-            />
-          ))}
-        </div>
+            ))}
+          </div>
+        </>
       )}
 
       <div className="pointer-events-none absolute bottom-5 left-1/2 z-[10] -translate-x-1/2 text-center text-[10px] tracking-[0.18em] text-white/55">

@@ -78,9 +78,7 @@ export default function HarryWeb() {
     let finishTimeout: number | undefined;
     let hideTimeout: number | undefined;
 
-    setTypedText("");
-    setTypingDone(false);
-    setIntroLeaving(false);
+    // no need to reset — typedText/typingDone/introLeaving are already at their defaults on mount
 
     const typing = window.setInterval(() => {
       const nextText = fullText.slice(0, index + 1);
@@ -106,7 +104,6 @@ export default function HarryWeb() {
 
     return () => {
       window.clearInterval(typing);
-
       if (redTimeout) window.clearTimeout(redTimeout);
       if (finishTimeout) window.clearTimeout(finishTimeout);
       if (hideTimeout) window.clearTimeout(hideTimeout);
@@ -190,7 +187,7 @@ export default function HarryWeb() {
             })}
 
             <a
-              href="/harry_resume.pdf"
+              href="/res_no_phone.pdf"
               target="_blank"
               rel="noreferrer"
               onClick={playClickSound}
@@ -227,7 +224,7 @@ export default function HarryWeb() {
 
         {/* Mobile nav */}
         <div className="md:hidden">
-          <div className="flex items-center justify-between rounded-full border border-white/10 bg-black/40 px-5 py-4 backdrop-blur-md">
+          <div className="flex items-center justify-between border border-white/10 bg-black/40 px-5 py-4 backdrop-blur-md">
             <button
               onClick={() => {
                 playClickSound();

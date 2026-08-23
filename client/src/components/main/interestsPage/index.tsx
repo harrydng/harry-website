@@ -39,12 +39,12 @@ export default function Interests() {
     <section className="pointer-events-auto min-h-[calc(100vh-8rem)] px-6 py-10 text-white">
       {/* Header */}
       <div className="relative z-20 flex w-full justify-center pt-10">
-        <h1 className="font-pixel text-center text-2xl leading-relaxed text-white md:text-4xl">
+        <h1 className="font-serif text-center text-2xl leading-relaxed text-white md:text-4xl">
           Me in the Wild
         </h1>
       </div>
 
-      <h3 className="font-pixel text-center text-xl leading-relaxed text-red md:text-4xl">
+      <h3 className="font-serif text-center text-xl leading-relaxed text-red md:text-4xl">
         This page is still in construction.
       </h3>
 
@@ -81,7 +81,7 @@ export default function Interests() {
                     </span>
                   </div>
 
-                  <h2 className="font-pixel text-sm leading-relaxed text-white md:text-base">
+                  <h2 className="font-serif text-sm leading-relaxed text-white md:text-base">
                     {interest.title}
                   </h2>
                 </div>
@@ -97,7 +97,7 @@ export default function Interests() {
             </span>
           </div>
 
-          <h2 className="mt-8 font-pixel text-xl leading-relaxed text-white">
+          <h2 className="mt-8 font-serif text-xl leading-relaxed text-white">
             {selectedInterest.title}
           </h2>
         </div>
@@ -132,7 +132,7 @@ export default function Interests() {
                     </span>
                   </div>
 
-                  <h2 className="font-pixel text-sm leading-relaxed text-white md:text-base">
+                  <h2 className="font-serif text-sm leading-relaxed text-white md:text-base">
                     {interest.title}
                   </h2>
                 </div>
@@ -172,7 +172,7 @@ export default function Interests() {
                     </span>
                   </div>
 
-                  <h2 className="font-pixel text-sm leading-relaxed text-white">
+                  <h2 className="font-serif text-sm leading-relaxed text-white">
                     {interest.title}
                   </h2>
                 </div>

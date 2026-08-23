@@ -80,152 +80,334 @@ export default function Projects() {
   };
 
   return (
-    <section className="pointer-events-auto min-h-screen px-6 py-10 text-white">
-      <div className="relative z-20 flex w-full justify-center pt-10">
-        <h1 className="font-pixel text-center text-2xl leading-relaxed text-white md:text-4xl">
-          Projects
-        </h1>
-      </div>
+    <section className="pointer-events-auto min-h-screen px-6 pb-24 pt-14 text-white md:px-10 lg:px-16">
+      <div className="mx-auto w-full max-w-[1400px]">
+        {/* Top rule */}
+        <div className="border-t-2 border-red-400/80" />
 
-      <div className="mx-auto mt-12 max-w-5xl">
-        <div className="grid gap-8 md:grid-cols-2">
-          {projects.map((project) => {
+        {/* Masthead */}
+        <header className="border-b border-red-400/40 py-5 text-center">
+          <p className="mb-3 font-serif text-[9px] uppercase tracking-[0.55em] text-red-300/70 md:text-[10px]">
+            Selected Works · Personal Archive · 2026
+          </p>
+
+          <h1 className="font-serif text-5xl font-black uppercase leading-none tracking-[-0.035em] text-white md:text-7xl lg:text-[92px]">
+            Projects
+          </h1>
+
+          <div className="mx-auto mt-5 flex max-w-5xl items-center gap-4">
+            <div className="h-px flex-1 bg-red-400/40" />
+
+            <p className="font-serif text-[10px] uppercase tracking-[0.35em] text-red-300/70">
+              Things I&apos;ve Built
+            </p>
+
+            <div className="h-px flex-1 bg-red-400/40" />
+          </div>
+        </header>
+
+        {/* Intro */}
+        <div className="border-b border-red-400/40 py-8 text-center">
+          <h2 className="mx-auto max-w-6xl font-serif text-2xl font-semibold leading-[1.05] text-white md:text-5xl lg:text-6xl">
+            Experiments, products, and ideas
+            <br className="hidden md:block" />
+          </h2>
+        </div>
+
+        {/* Metadata */}
+        <div className="grid border-b border-red-400/40 font-serif sm:grid-cols-3">
+          <div className="border-b border-red-400/20 px-5 py-4 text-center sm:border-b-0 sm:border-r">
+            <p className="text-[8px] uppercase tracking-[0.35em] text-red-300/60">
+              Works Collected
+            </p>
+
+            <p className="mt-2 text-sm text-white/85">
+              {projects.length} {"Projects"}
+            </p>
+          </div>
+
+          <div className="border-b border-red-400/20 px-5 py-4 text-center sm:border-b-0 sm:border-r">
+            <p className="text-[8px] uppercase tracking-[0.35em] text-red-300/60">
+              Focus
+            </p>
+
+            <p className="mt-2 text-sm text-white/85">Software &amp; Product</p>
+          </div>
+
+          <div className="px-5 py-4 text-center">
+            <p className="text-[8px] uppercase tracking-[0.35em] text-red-300/60">
+              Status
+            </p>
+
+            <p className="mt-2 text-sm text-white/85">Continuously Building</p>
+          </div>
+        </div>
+
+        {/* Projects */}
+        <div>
+          {projects.map((project, index) => {
             const isOpen = openProjectId === project.id;
+            const isEven = index % 2 === 0;
 
             return (
-              <button
+              <article
                 key={project.id}
-                type="button"
-                onClick={() => toggleProject(project.id)}
-                className="group overflow-hidden rounded-2xl border border-red-400/20 bg-black/[0.35] text-left backdrop-blur-[3px] shadow-[0_0_35px_rgba(0,0,0,0.45)]
-              transition-all duration-300 hover:-translate-y-1 hover:border-red-400/50 hover:bg-red-500/[0.06]
-              hover:shadow-[0_0_35px_rgba(248,113,113,0.18)]"
+                className="border-b border-white py-10"
               >
-                {/* Image on top */}
-                <div className="relative h-56 w-full overflow-hidden bg-white/[0.06]">
-                  {project.image ? (
-                    <img
-                      src={project.image}
-                      alt={project.project_name}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  ) : (
-                    <div className="flex h-full w-full items-center justify-center text-sm text-white/35">
-                      Project image coming soon
-                    </div>
-                  )}
+                {/* Project number / award */}
+                <div className="mb-5 flex items-center justify-between gap-4 font-serif text-[12px] uppercase tracking-[0.25em]">
+                  <span className="text-red-300/100 font-bold">
+                    Project No. {String(index + 1).padStart(2, "0")}
+                  </span>
 
                   {project.award && (
-                    <div className="absolute left-4 top-4 rounded-full border border-red-400/30 bg-black/60 px-3 py-1 text-[10px] text-red-300 backdrop-blur-sm">
-                      {project.award}
-                    </div>
+                    <span className="text-red-300/100 font-bold">
+                      ★ {project.award}
+                    </span>
                   )}
                 </div>
 
-                {/* Bottom content */}
-                <div className="border-t border-white/10 px-5 py-4">
-                  <div className="flex items-center justify-between gap-4">
-                    <div>
-                      <h2 className="font-pixel text-lg text-white">
-                        {project.project_name}
-                      </h2>
-
-                      <p className="mt-3 text-sm leading-6 text-white/65">
-                        {project.project_description}
-                      </p>
-                    </div>
-
-                    <span
-                      className={`text-xl text-white/60 transition-transform duration-300 ${
-                        isOpen ? "rotate-45" : ""
-                      }`}
+                <div
+                  className={`grid items-start gap-8 lg:grid-cols-12 ${
+                    isEven ? "" : "lg:[&>*:first-child]:order-2"
+                  }`}
+                >
+                  {/* Image */}
+                  <div className="lg:col-span-7">
+                    <button
+                      type="button"
+                      onClick={() => toggleProject(project.id)}
+                      className="group block w-full text-left"
                     >
-                      +
-                    </span>
-                  </div>
-
-                  {/* Expands inside the card */}
-                  <div
-                    className={`grid transition-all duration-500 ease-in-out ${
-                      isOpen
-                        ? "grid-rows-[1fr] opacity-100"
-                        : "grid-rows-[0fr] opacity-0"
-                    }`}
-                  >
-                    <div className="overflow-hidden">
-                      <div className="mt-5 border-t border-white/10 pt-5">
-                        {project.contribution.length > 0 && (
-                          <div>
-                            <p className="font-pixel text-[8px] uppercase tracking-[0.22em] text-red-300">
-                              Contribution
-                            </p>
-
-                            <div className="mt-4 space-y-3">
-                              {project.contribution.map((item, index) => (
-                                <div
-                                  key={index}
-                                  className="rounded-2xl border border-white/10 bg-black/[0.35] px-4 py-3 backdrop-blur-[2px] shadow-[0_0_25px_rgba(0,0,0,0.25)]"
-                                >
-                                  <p className="text-sm leading-6 text-white/75">
-                                    {item}
-                                  </p>
-                                </div>
-                              ))}
-                            </div>
+                      <div className="relative w-full overflow-hidden border border-red-400/30">
+                        {project.image ? (
+                          <img
+                            src={project.image}
+                            alt={project.project_name}
+                            className="
+        block
+        h-auto
+        w-full
+        object-contain
+        
+        transition duration-700
+        group-hover:-0
+        group-hover:scale-105
+      "
+                          />
+                        ) : (
+                          <div className="flex min-h-[260px] w-full items-center justify-center font-serif text-xs uppercase tracking-[0.3em] text-white/25">
+                            Project Image
                           </div>
                         )}
 
-                        {/* Tech logos + names */}
-                        <div className="mt-6 border-t border-white/10 pt-5">
-                          <p className="font-pixel text-[8px] uppercase tracking-[0.22em] text-red-300">
-                            Tech Stack
+                        <div className="absolute left-4 top-4 bg-black/45 px-2 py-1 font-serif text-[10px] uppercase tracking-[0.3em] text-red-300/80 backdrop-blur-sm">
+                          {String(index + 1).padStart(2, "0")}
+                        </div>
+
+                        <div
+                          className="
+      absolute bottom-4 right-4
+      border border-red-400/50
+      bg-black/55
+      px-3 py-2
+      font-serif text-[9px] uppercase tracking-[0.25em]
+      text-red-300
+      backdrop-blur-sm
+      transition-all duration-300
+      group-hover:border-red-400
+      group-hover:text-red-200
+      group-hover:shadow-[0_0_16px_rgba(248,113,113,0.2)]
+    "
+                        >
+                          {isOpen ? "Close Story" : "Read Story"}
+                        </div>
+                      </div>
+                    </button>
+
+                    <p className="mt-3 border-b border-red-400/20 pb-3 font-serif text-[12px] italic leading-5 text-white/100">
+                      A closer look at {project.project_name}, its development,
+                      and the technology behind it.
+                    </p>
+                  </div>
+
+                  {/* Description */}
+                  <div
+                    className={`lg:col-span-5 ${
+                      isEven
+                        ? "lg:border-l lg:border-red-400/30 lg:pl-8"
+                        : "lg:border-r lg:border-red-400/30 lg:pr-8"
+                    }`}
+                  >
+                    <p className="font-serif text-[9px] uppercase tracking-[0.35em] text-red-300/100">
+                      Featured Work
+                    </p>
+
+                    <h2 className="mt-3 font-serif text-4xl font-semibold leading-[0.95] tracking-[-0.025em] text-white md:text-5xl">
+                      {project.project_name}
+                    </h2>
+
+                    <p className="mt-5 font-serif text-[15px] leading-7 text-white/80">
+                      {project.project_description}
+                    </p>
+
+                    {/* Tech preview */}
+                    <div className="mt-7 border-t border-red-400/25 pt-5">
+                      <p className="font-serif text-[8px] uppercase tracking-[0.35em] text-red-300/100 font-bold">
+                        Built With
+                      </p>
+
+                      <div className="mt-4 flex flex-wrap gap-x-6 gap-y-3">
+                        {project.hard_skills.slice(0, 5).map((tech) => {
+                          const { Icon, label } = getTechIcon(tech);
+
+                          return (
+                            <div
+                              key={tech}
+                              className="group/tech flex items-center gap-2 font-serif text-xs text-white/100 transition-colors hover:text-white"
+                            >
+                              <Icon className="text-[15px] text-red-400/80 transition-colors duration-300 group-hover/tech:text-red-300" />
+                              <span>{label}</span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Continue */}
+                    <button
+                      type="button"
+                      onClick={() => toggleProject(project.id)}
+                      className="
+                        mt-7 flex items-center gap-3
+                        border-y border-red-400/30
+                        py-3
+                        font-serif text-[10px] uppercase tracking-[0.3em]
+                        text-red-300/80
+                        transition-all duration-300
+                        hover:border-red-400/60
+                        hover:text-red-200
+                      "
+                    >
+                      <span>
+                        {isOpen ? "Close Article" : "Continue Reading"}
+                      </span>
+
+                      <span
+                        className={`text-lg text-red-400 transition-transform duration-300 ${
+                          isOpen ? "rotate-45" : ""
+                        }`}
+                      >
+                        +
+                      </span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Expanded content */}
+                <div
+                  className={`grid transition-all duration-500 ease-in-out ${
+                    isOpen
+                      ? "grid-rows-[1fr] opacity-100"
+                      : "grid-rows-[0fr] opacity-0"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="mt-8 border-t border-red-400/30 pt-8">
+                      <div className="grid gap-8 lg:grid-cols-12">
+                        {/* Left */}
+                        <div className="lg:col-span-3 lg:border-r lg:border-red-400/25 lg:pr-8">
+                          <p className="font-serif text-[9px] uppercase tracking-[0.35em] text-red-300/100 font-bold">
+                            Behind The Project
                           </p>
 
-                          <div className="mt-4 flex flex-wrap gap-3">
+                          <h3 className="mt-3 font-serif text-3xl font-semibold leading-tight text-white">
+                            What I worked on
+                          </h3>
+
+                          <p className="mt-4 font-serif text-sm italic leading-6 text-white/80">
+                            Development notes, responsibilities, and technical
+                            decisions from the project.
+                          </p>
+
+                          {project.link && (
+                            <a
+                              href={project.link}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="mt-6 inline-block border-b border-red-400/50 pb-1 font-serif text-[12px] uppercase tracking-[0.25em] text-red-300/100 transition hover:text-red-200"
+                            >
+                              View Project ↗
+                            </a>
+                          )}
+                        </div>
+
+                        {/* Contributions */}
+                        <div className="lg:col-span-6 lg:border-r lg:border-red-400/25 lg:pr-8">
+                          {project.contribution.length > 0 && (
+                            <>
+                              <p className="mb-4 font-serif text-[9px] uppercase tracking-[0.35em] text-red-300/100 font-bold">
+                                Contributions
+                              </p>
+
+                              <div className="space-y-5">
+                                {project.contribution.map((item, itemIndex) => (
+                                  <div
+                                    key={itemIndex}
+                                    className="grid grid-cols-[36px_1fr] gap-4 border-b border-red-400/20 pb-5"
+                                  >
+                                    <span className="font-serif text-3xl text-red-400/80">
+                                      {String(itemIndex + 1).padStart(2, "0")}
+                                    </span>
+
+                                    <p className="font-serif text-[15px] leading-7 text-white/80">
+                                      {item}
+                                    </p>
+                                  </div>
+                                ))}
+                              </div>
+                            </>
+                          )}
+                        </div>
+
+                        {/* Tech stack */}
+                        <div className="lg:col-span-3">
+                          <p className="font-serif text-[9px] uppercase tracking-[0.35em] text-red-300/100 font-bold">
+                            Technology Index
+                          </p>
+
+                          <div className="mt-5 divide-y divide-red-400/20 border-y border-red-400/30">
                             {project.hard_skills.map((tech) => {
                               const { Icon, label } = getTechIcon(tech);
 
                               return (
                                 <div
                                   key={tech}
-                                  title={label}
-                                  className="group/tech flex items-center gap-2 rounded-full border border-red-400/20 bg-red-500/10 px-3 py-2 text-white/75 backdrop-blur-sm
-                                  shadow-[0_0_18px_rgba(248,113,113,0.12)]
-                                  transition-all duration-300 hover:-translate-y-1 hover:border-red-400/50 hover:text-white
-                                  hover:shadow-[0_0_22px_rgba(248,113,113,0.35)]"
+                                  className="group/tech flex items-center justify-between py-3 font-serif text-sm text-white/80 transition-colors hover:text-white"
                                 >
-                                  <span className="text-[16px] leading-none transition-transform duration-300 group-hover/tech:scale-110">
-                                    <Icon />
-                                  </span>
+                                  <span>{label}</span>
 
-                                  <span className="text-[10px] leading-none">
-                                    {label}
-                                  </span>
+                                  <Icon className="text-base text-red-400/80 transition-colors group-hover/tech:text-red-300" />
                                 </div>
                               );
                             })}
                           </div>
                         </div>
-
-                        {project.link && (
-                          <a
-                            href={project.link}
-                            target="_blank"
-                            rel="noreferrer"
-                            onClick={(event) => event.stopPropagation()}
-                            className="mt-5 inline-block text-sm text-red-300 underline underline-offset-4 transition hover:text-red-200"
-                          >
-                            View project
-                          </a>
-                        )}
                       </div>
                     </div>
                   </div>
                 </div>
-              </button>
+              </article>
             );
           })}
         </div>
+
+        {/* Footer */}
+        <footer className="flex flex-col gap-3 py-6 font-serif text-[9px] uppercase tracking-[0.25em] text-red-300/60 sm:flex-row sm:items-center sm:justify-between">
+          <span>Harry Duong · Selected Works</span>
+          <span>Software · Systems · Products</span>
+          <span>End of Edition</span>
+        </footer>
       </div>
     </section>
   );
