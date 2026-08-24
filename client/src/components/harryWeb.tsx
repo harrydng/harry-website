@@ -189,7 +189,7 @@ export default function HarryWeb() {
             <a
               href="/res_no_phone.pdf"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
               onClick={playClickSound}
               className="font-pixel text-[10px] uppercase tracking-[0.16em] text-red-400 drop-shadow-[0_0_10px_rgba(248,113,113,0.8)] transition-all duration-300 hover:scale-105 hover:text-white hover:drop-shadow-[0_0_10px_rgba(255,255,255,1)]"
             >
@@ -223,38 +223,88 @@ export default function HarryWeb() {
         </div>
 
         {/* Mobile nav */}
+        {/* Mobile nav */}
         <div className="md:hidden">
-          <div className="flex items-center justify-between border border-white/10 bg-black/40 px-5 py-4 backdrop-blur-md">
-            <button
-              onClick={() => {
-                playClickSound();
-                navigate("/");
-              }}
-              className="font-pixel text-[10px] uppercase tracking-[0.25em] text-red-400 drop-shadow-[0_0_10px_rgba(248,113,113,0.8)]"
-            >
-              Harry
-            </button>
+          {/* Newspaper masthead bar */}
+          <div className="border-y-2 border-red-400/70 bg-black/70 backdrop-blur-md">
+            <div className="flex items-center justify-between border-y border-red-400/25 px-4 py-3">
+              <button
+                onClick={() => {
+                  playClickSound();
+                  navigate("/");
+                }}
+                className="text-left"
+              >
+                <p className="font-serif text-[7px] uppercase tracking-[0.35em] text-red-300/70">
+                  Personal Edition
+                </p>
 
-            <button
-              onClick={() => {
-                playClickSound();
-                setMobileMenuOpen((prev) => !prev);
-              }}
-              aria-label="Toggle navigation menu"
-              aria-expanded={mobileMenuOpen}
-              className="text-2xl text-white/80 transition hover:scale-110 hover:text-red-300"
-            >
-              {mobileMenuOpen ? <FiX /> : <FiMenu />}
-            </button>
+                <h1 className="mt-1 font-serif text-xl font-black uppercase tracking-[-0.02em] text-white">
+                  Harry
+                </h1>
+              </button>
+
+              <button
+                onClick={() => {
+                  playClickSound();
+                  setMobileMenuOpen((prev) => !prev);
+                }}
+                aria-label="Toggle navigation menu"
+                aria-expanded={mobileMenuOpen}
+                className="
+          flex
+          h-10
+          w-10
+          items-center
+          justify-center
+          border
+          border-red-400/40
+          text-xl
+          text-red-300
+          transition-all
+          duration-300
+          hover:border-red-300
+          hover:bg-red-500/[0.06]
+          hover:text-white
+        "
+              >
+                {mobileMenuOpen ? <FiX /> : <FiMenu />}
+              </button>
+            </div>
           </div>
 
+          {/* Newspaper dropdown */}
           <div
-            className={`mt-3 overflow-hidden rounded-2xl border border-white/10 bg-black/70 backdrop-blur-md
-            transition-all duration-300 ease-in-out
-            ${mobileMenuOpen ? "max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}
+            className={`
+      overflow-hidden
+      border-x border-b
+      border-red-400/30
+      bg-black/85
+      backdrop-blur-xl
+      transition-all
+      duration-300
+      ease-in-out
+      ${
+        mobileMenuOpen
+          ? "max-h-[600px] translate-y-0 opacity-100"
+          : "pointer-events-none max-h-0 -translate-y-1 opacity-0"
+      }
+    `}
           >
-            <div className="flex flex-col gap-4 px-5 py-5">
-              {navItems.map((item) => {
+            {/* Section label */}
+            <div className="flex items-center justify-between border-b border-red-400/30 px-4 py-2">
+              <p className="font-serif text-[8px] font-bold uppercase tracking-[0.35em] text-red-300/80">
+                Navigation Index
+              </p>
+
+              <p className="font-serif text-[8px] uppercase tracking-[0.25em] text-white/40">
+                Vol. 01
+              </p>
+            </div>
+
+            {/* Navigation items */}
+            <div>
+              {navItems.map((item, index) => {
                 const isActive = location.pathname === item.path;
 
                 return (
@@ -265,34 +315,129 @@ export default function HarryWeb() {
                       navigate(item.path);
                       setMobileMenuOpen(false);
                     }}
-                    className={`text-left font-pixel text-[10px] uppercase tracking-[0.18em] transition-all duration-300
-                    hover:translate-x-1 hover:text-white
-                    ${
-                      isActive
-                        ? "text-white"
-                        : "text-red-400 drop-shadow-[0_0_10px_rgba(248,113,113,0.8)]"
-                    }`}
+                    className={`
+              group
+              grid
+              w-full
+              grid-cols-[44px_1fr_20px]
+              items-center
+              border-b
+              border-red-400/20
+              px-4
+              py-4
+              text-left
+              transition-all
+              duration-300
+              ${isActive ? "bg-red-500/[0.07]" : "hover:bg-red-500/[0.04]"}
+            `}
                   >
-                    {item.label}
+                    {/* Number */}
+                    <span
+                      className={`
+                font-serif
+                text-sm
+                ${isActive ? "text-red-300" : "text-red-400/50"}
+              `}
+                    >
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+
+                    {/* Label */}
+                    <div>
+                      <p
+                        className={`
+                  font-serif
+                  text-base
+                  font-semibold
+                  transition-colors
+                  ${
+                    isActive
+                      ? "text-white"
+                      : "text-white/80 group-hover:text-white"
+                  }
+                `}
+                      >
+                        {item.label}
+                      </p>
+
+                      <p className="mt-1 font-serif text-[8px] uppercase tracking-[0.25em] text-white/40">
+                        Section
+                      </p>
+                    </div>
+
+                    {/* Active mark */}
+                    <span
+                      className={`
+                text-right
+                font-serif
+                text-xs
+                ${isActive ? "text-red-300" : "text-white/20"}
+              `}
+                    >
+                      {isActive ? "●" : "→"}
+                    </span>
                   </button>
                 );
               })}
 
-              {/* Resume inside mobile menu */}
+              {/* Resume */}
               <a
-                href="/harry_resume.pdf"
+                href="/res_no_phone.pdf"
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => {
                   playClickSound();
                   setMobileMenuOpen(false);
                 }}
-                className="text-left font-pixel text-[10px] uppercase tracking-[0.18em] text-red-400 drop-shadow-[0_0_10px_rgba(248,113,113,0.8)] transition-all duration-300 hover:translate-x-1 hover:text-white"
+                className="
+          group
+          grid
+          w-full
+          grid-cols-[44px_1fr_20px]
+          items-center
+          border-b
+          border-red-400/20
+          px-4
+          py-4
+          text-left
+          transition-all
+          duration-300
+          hover:bg-red-500/[0.04]
+        "
               >
-                Resume
-              </a>
+                <span className="font-serif text-sm text-red-400/50">
+                  {String(navItems.length + 1).padStart(2, "0")}
+                </span>
 
-              <div className="mt-2 flex items-center justify-center gap-6 border-t border-white/10 pt-5">
+                <div>
+                  <p className="font-serif text-base font-semibold text-white/80 transition-colors group-hover:text-white">
+                    Resume
+                  </p>
+
+                  <p className="mt-1 font-serif text-[8px] uppercase tracking-[0.25em] text-white/40">
+                    External Document
+                  </p>
+                </div>
+
+                <span className="text-right font-serif text-xs text-red-300">
+                  ↗
+                </span>
+              </a>
+            </div>
+
+            {/* Social footer */}
+            <div className="grid grid-cols-[1fr_auto] items-center gap-4 border-t-2 border-red-400/50 px-4 py-4">
+              <div>
+                <p className="font-serif text-[8px] font-bold uppercase tracking-[0.35em] text-red-300/80">
+                  Social Directory
+                </p>
+
+                <p className="mt-1 font-serif text-[9px] italic text-white/45">
+                  Elsewhere on the internet
+                </p>
+              </div>
+
+              <div className="flex items-center gap-4">
                 {socials.map((social) => (
                   <a
                     key={social.id}
@@ -305,15 +450,42 @@ export default function HarryWeb() {
                         "--social-color": social.color,
                       } as React.CSSProperties
                     }
-                    className="text-[22px] text-white/60 transition-all duration-300
-                    hover:-translate-y-1 hover:scale-110
-                    hover:text-[var(--social-color)]
-                    hover:drop-shadow-[0_0_10px_var(--social-color)]"
+                    className="
+              flex
+              h-8
+              w-8
+              items-center
+              justify-center
+              border
+              border-red-400/25
+              text-base
+              text-white/60
+              transition-all
+              duration-300
+              hover:border-red-400/60
+              hover:text-[var(--social-color)]
+              hover:drop-shadow-[0_0_8px_var(--social-color)]
+            "
                   >
                     {getSocialIcon(social.id)}
                   </a>
                 ))}
               </div>
+            </div>
+
+            {/* Bottom newspaper strip */}
+            <div className="flex items-center justify-between border-t border-red-400/30 px-4 py-2">
+              <span className="font-serif text-[7px] uppercase tracking-[0.25em] text-white/35">
+                Harry Duong
+              </span>
+
+              <span className="font-serif text-[7px] uppercase tracking-[0.25em] text-red-300/60">
+                Personal Archives
+              </span>
+
+              <span className="font-serif text-[7px] uppercase tracking-[0.25em] text-white/35">
+                2026
+              </span>
             </div>
           </div>
         </div>
