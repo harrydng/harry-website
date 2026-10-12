@@ -7,7 +7,7 @@ const VIEWBOX_WIDTH = 1920;
 const VIEWBOX_HEIGHT = 1080;
 
 const TIMELINE_START_YEAR = 2023;
-const TIMELINE_END_YEAR = 2026;
+const TIMELINE_END_YEAR = 2027;
 
 const TIMELINE_START_X = 100;
 const TIMELINE_END_X = 1840;
@@ -26,8 +26,18 @@ function getDecimalYear(month: number, year: number) {
 }
 
 function getMiddleTimelineYear(experience: ProfessionalExperience) {
-  const start = getDecimalYear(experience.from_month, experience.from_year);
-  const end = getDecimalYear(experience.to_month, experience.to_year);
+  const start = getDecimalYear(
+    experience.from_month,
+    experience.from_year,
+  );
+
+  const now = new Date();
+  const isOngoing =
+    experience.to_month == null || experience.to_year == null;
+
+  const end = isOngoing
+    ? getDecimalYear(now.getMonth() + 1, now.getFullYear())
+    : getDecimalYear(experience.to_month!, experience.to_year!);
 
   return (start + end) / 2;
 }
@@ -60,33 +70,36 @@ function getMilkyWayTimelinePoints() {
   return points.join(" ");
 }
 
-function getCardPosition(index: number, x: number, y: number) {
-  const isAbove = index % 2 === 0;
+const CARD_WIDTH = 310;
+const CARD_HEIGHT = 160;
+const TOP_ROW_Y = 370;
+const BOTTOM_ROW_Y = 850;
 
+function getCardPosition(index: number, x: number) {
   return {
-    x: x - 155,
-    y: isAbove ? y - 220 : y + 65,
+    x: Math.max(
+      24,
+      Math.min(x - CARD_WIDTH / 2, VIEWBOX_WIDTH - CARD_WIDTH - 24),
+    ),
+    y: index % 2 === 0 ? TOP_ROW_Y : BOTTOM_ROW_Y,
   };
 }
 
 function formatDateRange(experience: ProfessionalExperience) {
   const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
   ];
 
-  const from = `${months[experience.from_month - 1]} ${experience.from_year}`;
-  const to = `${months[experience.to_month - 1]} ${experience.to_year}`;
+  const from =
+    `${months[experience.from_month - 1]} ${experience.from_year}`;
+
+  const isOngoing =
+    experience.to_month == null || experience.to_year == null;
+
+  const to = isOngoing
+    ? "Present"
+    : `${months[experience.to_month! - 1]} ${experience.to_year}`;
 
   return `${from} — ${to}`;
 }
@@ -115,10 +128,10 @@ export default function Professionals() {
     return getMiddleTimelineYear(a) - getMiddleTimelineYear(b);
   });
 
-  const years = [2023, 2024, 2025, 2026];
+  const years = [2023, 2024, 2025, 2026, 2027];
 
   return (
-    <section className="pointer-events-auto min-h-screen px-6 pb-24 pt-14 text-white md:px-10 lg:px-16">
+    <section className="pointer-events-auto min-h-screen px-6 pb-24 pt-24 text-white md:px-10 lg:px-16">
       {/* Header */}
       <div className="relative z-30 mx-auto w-full max-w-[1400px]">
         <div className="border-t-2 border-red-400/80" />
@@ -224,10 +237,23 @@ export default function Professionals() {
             const timelineYear = getMiddleTimelineYear(experience);
             const x = getTimelineX(timelineYear);
             const y = getTimelineY(timelineYear);
-            const card = getCardPosition(index, x, y);
+            const card = getCardPosition(index, x);
+            const isAbove = index % 2 === 0;
+            const cardCenterX = card.x + CARD_WIDTH / 2;
+            const cardEdgeY = isAbove ? card.y + CARD_HEIGHT : card.y;
 
             return (
               <g key={`${experience.id}-${experience.role}`}>
+                <path
+                  d={`M ${x} ${y}
+                      L ${x} ${(y + cardEdgeY) / 2}
+                      L ${cardCenterX} ${cardEdgeY}`}
+                  fill="none"
+                  stroke="rgba(248,113,113,0.4)"
+                  strokeWidth="1"
+                  strokeDasharray="4 6"
+                />
+
                 {/* Outer dot glow */}
                 <circle
                   cx={x}
@@ -249,12 +275,12 @@ export default function Professionals() {
 
                 {/* Card */}
                 <foreignObject
-                  x={card.x}
-                  y={card.y}
-                  width="310"
-                  height="160"
-                  className="pointer-events-auto overflow-visible"
-                >
+                    x={card.x}
+                    y={card.y}
+                    width={CARD_WIDTH}
+                    height={CARD_HEIGHT}
+                    className="pointer-events-auto overflow-visible"
+                  >
                   <button
                     type="button"
                     onClick={() => openModal(experience)}
