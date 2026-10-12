@@ -11,7 +11,7 @@ const TIMELINE_END_YEAR = 2027;
 
 const TIMELINE_START_X = 100;
 const TIMELINE_END_X = 1840;
-const TIMELINE_Y_OFFSET = 60;
+const TIMELINE_Y_OFFSET = 0;
 
 function milkyWayCenterY(x: number) {
   return (
@@ -72,8 +72,8 @@ function getMilkyWayTimelinePoints() {
 
 const CARD_WIDTH = 310;
 const CARD_HEIGHT = 160;
-const TOP_ROW_Y = 370;
-const BOTTOM_ROW_Y = 850;
+const TOP_ROW_Y = 360;
+const BOTTOM_ROW_Y = 800;
 
 function getCardPosition(index: number, x: number) {
   return {
