@@ -1,5 +1,29 @@
 export const projects = [
   {
+    id: "moms-50th-birthday",
+    project_name: "50 Years of Mom",
+    award: "",
+    link: "https://bichhuongphan.com",
+    image: "/projects/moms-birthday.png",
+    tech_stack: ["React", "TypeScript", "Tailwind CSS", "CSS Animations"],
+    project_description:
+      "A personal website celebrating my mom's 50th birthday, bringing together family letters, photos, music, and video in an interactive journey through her life.",
+    contribution: [
+      "Designed and built the complete experience, from an animated envelope revealing family letters to a photo album, life timeline, and closing video.",
+      "Created responsive desktop and mobile layouts with custom animations, background music controls, and switchable photo gallery views.",
+      "Organized letters, photos, and life stages into typed data files to simplify content updates, and published the website on a custom domain.",
+    ],
+    hard_skills: [
+      "React",
+      "TypeScript",
+      "Tailwind CSS",
+      "Responsive Design",
+      "CSS Animations",
+      "HTML Audio & Video",
+      "DNS Configuration",
+    ],
+  },
+  {
     id: "earthbeats",
     project_name: "EarthBeats",
     award: "Winner of Hackbeanpot 2025",
@@ -107,14 +131,7 @@ export const projects = [
     award: "Best AI Hack at FinHacks 2025",
     link: "https://devpost.com/software/spendr",
     image: "/projects/spendr.png",
-    tech_stack: [
-      "React",
-      "Flask",
-      "MySQL",
-      "Docker",
-      "LightFM",
-      "REST APIs",
-    ],
+    tech_stack: ["React", "Flask", "MySQL", "Docker", "LightFM", "REST APIs"],
     project_description:
       "Spendr is a financial compatibility app that uses spending behavior and personality-style inputs to match users based on money habits and lifestyle alignment.",
     contribution: [
@@ -122,13 +139,6 @@ export const projects = [
       "Created Flask REST APIs for user authentication, quiz processing, match retrieval, and financial profile management.",
       "Designed the MySQL schema and containerized the app with Docker to make local development and deployment smoother.",
     ],
-    hard_skills: [
-      "React",
-      "Flask",
-      "MySQL",
-      "Docker",
-      "LightFM",
-      "REST APIs",
-    ],
+    hard_skills: ["React", "Flask", "MySQL", "Docker", "LightFM", "REST APIs"],
   },
 ] as const;
