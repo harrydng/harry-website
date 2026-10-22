@@ -9,7 +9,7 @@ export const professional = [
     to_month: 10,
     to_year: 2026,
     link: "https://home.dartmouth.edu/",
-    logo: "/professional/dartmouth-logo.png",
+    logo: "/professional/dartmouth-logo.jpeg",
     description: [
       "Supported synthetic-legislator research by extending a Python pipeline to generate survey-response predictions and confidence scores using OpenAI, Anthropic, Gemini, and open-weight models",
       "Implemented provider API integrations and model configurations, completing a pilot across five legislators and seven model conditions with three runs per condition to support analysis of prediction variability",
